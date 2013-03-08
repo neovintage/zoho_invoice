@@ -8,9 +8,18 @@ Gem::Specification.new do |gem|
   gem.version       = ZohoInvoice::VERSION
   gem.authors       = ["Rimas Silkaitis"]
   gem.email         = ["neovintage@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.summary       = %q{Zoho Invoice API}
+  gem.description   = %q{Ruby wrapper for the Zoho Invoice API.  Documentation for the Zoho Invoice API can be found at http://zoho.com}
+  gem.homepage      = "https://github.com/neovintage/zoho_invoice"
+
+  gem.required_ruby_version     = ">= 1.9.3"
+  gem.required_rubygems_version = ">= 1.3.6"
+
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "webmock"
+
+  gem.add_runtime_dependency "faraday", ">= 0.8.0"
+  gem.add_runtime_dependency "faraday-middleware", ">= 0.8.7"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
