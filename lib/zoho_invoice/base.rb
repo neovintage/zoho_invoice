@@ -32,8 +32,10 @@ module ZohoInvoice
 
       # Assign all of the single attribtues
       #
-      (self.attributes & options.keys).each do |attribute|
-        self.send("#{attribute}=", options[attribute])
+      if !self.attributes.empty?
+        (self.attributes & options.keys).each do |attribute|
+          self.send("#{attribute}=", options[attribute])
+        end
       end
 
       # Assign all of the associations.  Not the most advanced
@@ -42,11 +44,11 @@ module ZohoInvoice
         self.reflections.each { |r| self.send("#{r}=", []) }
         (self.reflections & options.keys).each do |reflection|
           options[reflection].each do |reflection_obj|
-            klass = const_get(camel_case(reflection.to_s[0..-1]))
+            klass = Kernel.const_get(camel_case(reflection.to_s[0..-2]))
             if reflection_obj.is_a?(Hash)
-              self.send("#{reflection}<<", klass.new(reflection_obj))
+              self.send("#{reflection}") << klass.new(@client, reflection_obj)
             elsif reflection_obj.is_a?(klass)
-              self.send("#{reflection}<<", reflection_obj)
+              self.send("#{reflection}") << reflection_obj
             end
           end
         end
@@ -54,11 +56,11 @@ module ZohoInvoice
     end
 
     def reflections
-      self.class.instance_variable_get(:'@reflections')
+      self.class.instance_variable_get(:'@reflections') || []
     end
 
     def attributes
-      self.class.instance_variable_get(:'@attributes')
+      self.class.instance_variable_get(:'@attributes') || []
     end
 
     def errors
@@ -89,8 +91,8 @@ module ZohoInvoice
 
     # This needs to be a Nokogiri::XML::Builder
     #
-    def to_xml
-      build_attributes.to_xml
+    def to_xml(*args)
+      build_attributes.to_xml(*args)
     end
 
   protected
@@ -123,18 +125,14 @@ module ZohoInvoice
         xml.send("#{self.class}") {
           self.attributes.each do |attr|
             vals = self.send(attr)
-            if !vals.nil? && vals.is_a?(Array) && vals.length > 0
-              vals.each do |val|
-                xml.send(camel_case(attr.to_s), val.to_xml)
-              end
-            elsif !vals.nil? && !vals.is_a?(Array)
+            if !vals.nil? && !vals.is_a?(Array)
               xml.send("#{camel_case(attr.to_s)}_", self.send(attr))
             end
           end
           self.reflections.each do |refl|
             if !refl.empty?
               xml.send(camel_case(refl.to_s)) {
-                self.send(refl).each { |x| xml << x.to_xml }
+                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
               }
             end
           end

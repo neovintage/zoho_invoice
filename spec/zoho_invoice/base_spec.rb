@@ -79,7 +79,7 @@ describe ZohoInvoice::Base do
 
     it "should create the associations correctly" do
       class Thing < Struct.new(:stuff)
-        def to_xml
+        def to_xml(*args)
           "<Thing>#{stuff}</Thing>"
         end
       end
@@ -154,8 +154,29 @@ describe ZohoInvoice::Base do
   end
 
   describe "nested associations" do
-    it "can be created at initialization"
+    class Tuna < ZohoInvoice::Base
+      define_object_attrs :blah
+    end
+    class TestIt < ZohoInvoice::Base
+      has_many :tunas
+    end
 
-    it "outputted when coverted to xml"
+    before do
+      @client = ZohoInvoice::Client.new(default_credentials)
+    end
+
+    it "can be created at initialization" do
+      test = TestIt.new(@client, :tunas => [{:blah => 1234}, Tuna.new(@client, :blah => 5678)])
+      expect(test.tunas.length).to eq(2)
+      expect(test.tunas.first.blah).to eq(1234)
+      expect(test.tunas.last.blah).to eq(5678)
+    end
+
+    it "outputted when coverted to xml", :focus => true do
+      test = TestIt.new(@client, :tunas => [{:blah => 1234}])
+      doc  = Nokogiri::XML(test.to_xml)
+      expect(doc.xpath('//Tunas').length).to be >= 1
+      expect(doc.xpath('//Tuna').length).to eq(1)
+    end
   end
 end

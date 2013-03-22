@@ -1,8 +1,5 @@
-require 'forwardable'
-
 module ZohoInvoice
   module Configurable
-    extend Forwardable
 
     # @return [String] The permanent authtoken used to authenticate each API request
     attr_accessor :authtoken
@@ -15,10 +12,6 @@ module ZohoInvoice
 
     # @return [Hash] Client configuration to pass to Faraday
     attr_accessor :client_options
-
-    # Just a helper to identify the options to pass in for configuration
-    #
-    def_delegator :options, :hash
 
     class << self
 
@@ -38,6 +31,10 @@ module ZohoInvoice
       self
     end
 
+    def config_hash
+      Hash[ZohoInvoice::Configurable.keys.map{ |key| [key, instance_variable_get(:"@#{key}")] }]
+    end
+
     private
 
     def credentials
@@ -48,8 +45,5 @@ module ZohoInvoice
       }
     end
 
-    def options
-      Hash[ZohoInvoice::Configurable.keys.map{ |key| [key, instance_variable_get(:"@#{key}")] }]
-    end
   end
 end
