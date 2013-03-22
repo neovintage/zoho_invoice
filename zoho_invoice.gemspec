@@ -15,12 +15,12 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version     = ">= 1.9.3"
   gem.required_rubygems_version = ">= 1.3.6"
 
-  gem.add_development_dependency "rake"
-  gem.add_development_dependency "webmock"
+  gem.add_development_dependency 'bundler', '~> 1.0'
 
   gem.add_runtime_dependency "faraday", ">= 0.8.0"
-  gem.add_runtime_dependency "faraday-middleware", ">= 0.8.7"
+  gem.add_runtime_dependency "faraday_middleware", ">= 0.8.7"
   gem.add_runtime_dependency "nokogiri"
+  gem.add_runtime_dependency "multi_xml"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

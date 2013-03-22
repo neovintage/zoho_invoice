@@ -1,4 +1,17 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in zoho_invoice.gemspec
+gem 'rake'
+
+group :development do
+  gem 'pry'
+end
+
+group :test do
+  gem 'pry'
+  gem 'coveralls', :require => false
+  gem 'rspec', '>= 2.11'
+  gem 'simplecov', :require => false
+  gem 'webmock'
+end
+
 gemspec
