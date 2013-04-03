@@ -1,6 +1,8 @@
 # ZohoInvoice
 
-TODO: Write a gem description
+Need to interact with the Zoho Invoice API?  The zoho_invoice gem has your back.
+
+Until the gem reaches 1.0, the interface for interacting with the gem could change.  On top of that the gem does not support the entire API just yet.  Just the minimum number of domain objects to actually create customers and invoices.  This will change over time.
 
 ## Installation
 
@@ -16,9 +18,33 @@ Or install it yourself as:
 
     $ gem install zoho_invoice
 
+## Configuration
+
+The Zoho Invoice API service requires that you generate an auth token ahead of time using the API, just once.  Fortunately, the gem can handle that in console for you, all you need is your username and password.
+Then you can save the authtoken in your project based on however you do your configuration.
+
+```
+homebase $ irb
+> require 'zoho_invoice'
+ => true
+> result = ZohoInvoice::AuthToken.generate_authtoken('dude@example.com', 'thisismysweetpassword')
+ => #<struct ZohoInvoice::AuthToken::AuthTokenResult authtoken="blahblahblahnumbersnstuff", cause=nil>
+> result.success?
+ => true
+> result.auth_token
+ => "blahblahblahnumbersnstuff"
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'zoho_invoice'
+
+client = ZohoInvoice::Client.new(:authtoken => 'my authtoken', :apikey => 'my apikey')
+
+invoice = ZohoInvoice::Invoice.new(client, :customer_id => 'asdf')
+invoice.save
+```
 
 ## Contributing
 

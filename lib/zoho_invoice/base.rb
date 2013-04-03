@@ -23,6 +23,10 @@ module ZohoInvoice
       create_attributes(attrs)
     end
 
+    def self.primary_key(attr)
+      @primary_key = attr
+    end
+
     def self.create(client, options = {})
       self.new(client, options).save
     end
