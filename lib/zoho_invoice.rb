@@ -12,6 +12,7 @@ require 'zoho_invoice/version'
 require 'zoho_invoice/base'
 require 'zoho_invoice/customer'
 require 'zoho_invoice/item'
+require 'zoho_invoice/invoice_item'
 require 'zoho_invoice/invoice'
 
 module ZohoInvoice

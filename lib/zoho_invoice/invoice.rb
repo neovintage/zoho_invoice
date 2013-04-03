@@ -1,3 +1,5 @@
+require 'zoho_invoice/invoice_item'
+
 module ZohoInvoice
   class Invoice < Base
 
