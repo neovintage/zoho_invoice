@@ -22,7 +22,6 @@ module ZohoInvoice
     has_many :contacts
 
     def self.search(client, input_text)
-
     end
 
   end

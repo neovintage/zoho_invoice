@@ -1,6 +1,17 @@
+require 'zoho_invoice/collection'
+
 module ZohoInvoice
   class Client
     include ZohoInvoice::Configurable
+
+    RESOURCES = [
+      :customers,
+      :invoices
+    ]
+
+    RESOURCES.each do |resource|
+      define_method(resource, ->{ ZohoInvoice::Collection.new(resource, self) })
+    end
 
     def initialize(options = {})
       ZohoInvoice::Configurable.keys.each do |key|
