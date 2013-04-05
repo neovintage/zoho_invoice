@@ -1,6 +1,8 @@
 module ZohoInvoice
   class Collection
 
+    attr_reader :resource, :klass, :client
+
     def initialize(resource, client)
       @resource = resource
       @klass    = "ZohoInvoice::#{resource[0..-2].capitalize}".split('::').reduce(Module, :const_get)
