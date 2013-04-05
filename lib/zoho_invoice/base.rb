@@ -95,6 +95,12 @@ module ZohoInvoice
       build_attributes.to_xml(*args)
     end
 
+    def self.create_attributes(attrs)
+      attrs.each do |attr|
+        attr_accessor attr
+      end
+    end
+
   protected
 
     def process_error(request_result)
@@ -140,12 +146,5 @@ module ZohoInvoice
       end
     end
 
-    private
-
-    def self.create_attributes(attrs)
-      attrs.each do |attr|
-        attr_accessor attr
-      end
-    end
   end
 end
