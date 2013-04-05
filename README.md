@@ -34,7 +34,7 @@ homebase $ irb
  => #<struct ZohoInvoice::AuthToken::AuthTokenResult authtoken="blahblahblahnumbersnstuff", cause=nil>
 > result.success?
  => true
-> result.auth_token
+> result.authtoken
  => "blahblahblahnumbersnstuff"
 ```
 
@@ -46,6 +46,16 @@ require 'zoho_invoice'
 client = ZohoInvoice::Client.new(:authtoken => 'my authtoken', :apikey => 'my apikey')
 
 invoice = ZohoInvoice::Invoice.new(client, :customer_id => 'asdf')
+invoice.save
+```
+
+If you're so inclined, you can scope the resources through the client.
+
+```ruby
+require 'zoho_invoice'
+
+client = ZohoInvoice::Client.new(:authtoken => 'my authtoken', :apikey => 'my apikey')
+invoice = client.invoices.new(:customer_id => 'asdf')
 invoice.save
 ```
 
