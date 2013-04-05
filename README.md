@@ -1,4 +1,7 @@
-# ZohoInvoice
+# Zoho Invoice
+
+[![Build Status](https://travis-ci.org/neovintage/zoho_invoice.png?branch=master)](https://travis-ci.org/neovintage/zoho_invoice)
+[![Coverage Status](https://coveralls.io/repos/neovintage/zoho_invoice/ibadge.png?branch=master)][coveralls]
 
 Need to interact with the Zoho Invoice API?  The zoho_invoice gem has your back.
 

@@ -14,6 +14,7 @@ require 'zoho_invoice'
 require 'webmock/rspec'
 require 'pry'
 
+Coveralls.wear!
 WebMock.disable_net_connect!
 
 RSpec.configure do |config|
