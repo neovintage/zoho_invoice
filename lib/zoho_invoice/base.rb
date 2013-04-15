@@ -27,6 +27,27 @@ module ZohoInvoice
       self.new(client, options).save
     end
 
+    # TODO need to build a class that is something like ActiveRecord::Relation
+    # TODO need to be able to handle associations when hydrating objects
+    #
+    def self.search(client, input_text, options = {})
+      result_hash = client.get("/api/view/search/#{self.to_s.split('::').last.downcase}s", :searchtext => input_text).body
+      objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
+      if objects_to_hydrate.nil?
+        return []
+      else
+        objects_to_hydrate.map do |result|
+          new_hash = {}
+          result.each do |key, value|
+            new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
+          end
+          self.new(client, new_hash)
+        end
+      end
+    rescue Faraday::Error::ClientError => e
+      return []
+    end
+
     def initialize(client, options = {})
       @client = client
 

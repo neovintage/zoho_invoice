@@ -3,6 +3,8 @@ require 'faraday_middleware'
 require 'nokogiri'
 require 'multi_xml'
 
+require 'zoho_invoice/core_ext/string'
+
 require 'zoho_invoice/configurable'
 require 'zoho_invoice/auth_token'
 require 'zoho_invoice/defaults'

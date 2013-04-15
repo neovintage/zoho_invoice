@@ -37,10 +37,11 @@ module ZohoInvoice
     def connection
       @connection ||= Faraday.new(@client_options) do |c|
         c.use       Faraday::Response::RaiseError
-        c.response  :xml, :content_type => 'application/xml'
 
         c.request :multipart
         c.request :url_encoded
+
+        c.response  :xml, :content_type => /\bxml$/
 
         c.adapter Faraday.default_adapter
       end

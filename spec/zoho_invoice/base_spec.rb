@@ -95,7 +95,7 @@ describe ZohoInvoice::Base do
     end
   end
 
-  describe "saving an object" do
+  describe "interactions" do
     before do
       class Something < ZohoInvoice::Base
         define_object_attrs :something_id, :blah
@@ -103,53 +103,105 @@ describe ZohoInvoice::Base do
       @test_obj = Something.new(@client)
     end
 
-    it "calls the create path if its a new record" do
-      @test_obj.something_id = nil
-      body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-      stub_post('/api/somethings/create').
-        with(:body => body_params).
-        to_return(:status => 200, :body => successful_something_response('5555'), :headers => {:content_type => 'application/xml'})
-      @test_obj.save
-      expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
+    describe "saving" do
+      it "calls the create path if its a new record" do
+        @test_obj.something_id = nil
+        body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
+        stub_post('/api/somethings/create').
+          with(:body => body_params).
+          to_return(:status => 200, :body => successful_something_response('5555'), :headers => {:content_type => 'application/xml'})
+        @test_obj.save
+        expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
+      end
+
+      it "calls the update path if its a dirty record" do
+        @test_obj.something_id = '123456'
+        body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
+        stub_post('/api/somethings/update').
+          with(:body => body_params).
+          to_return(:status => 200, :body => successful_something_response('123456'), :headers => {:content_type => 'application/xml'})
+        @test_obj.save
+        expect(a_post('/api/somethings/update').with(:body => body_params)).to have_been_made
+      end
+
+      it "can happen via .create" do
+        @test_obj.blah = '1234'
+        body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
+        stub_post('/api/somethings/create').
+          with(:body => body_params).
+          to_return(:status => 200, :body => successful_something_response("1234"), :headers => { :content_type => 'application/xml' })
+        test_obj = Something.create(@client, :blah => '1234')
+        expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
+        expect(test_obj.something_id).to eq('1')
+      end
+
+      it "returns the object and has an error method" do
+        @test_obj.blah = '1234'
+        body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
+        stub_post('/api/somethings/create').with(:body => body_params).to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => { :content_type => 'application/xml' })
+        test_obj = Something.create(@client, :blah => '1234')
+        expect(test_obj.something_id).to be_nil
+        expect(test_obj.errors.length).to eq(1)
+        error = test_obj.errors.first
+        expect(error.message).to eq("Invalid value passed for XMLString")
+        expect(error.code).to eq('2')
+        expect(error.status).to eq('0')
+        expect(error.http_status).to eq(500)
+      end
     end
 
-    it "calls the update path if its a dirty record" do
-      @test_obj.something_id = '123456'
-      body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-      stub_post('/api/somethings/update').
-        with(:body => body_params).
-        to_return(:status => 200, :body => successful_something_response('123456'), :headers => {:content_type => 'application/xml'})
-      @test_obj.save
-      expect(a_post('/api/somethings/update').with(:body => body_params)).to have_been_made
-    end
+    describe "searching" do
+      it "returns an array if it can find anything" do
+        body_params = default_credentials.merge(:searchtext => '1234')
+        stub_get('/api/view/search/somethings').
+          with(:query => body_params).
+          to_return(:status => 200, :body => successful_multiple_record_response('1234'), :headers => {:content_type => 'application/xml'})
+        result = Something.search(@client, '1234')
+        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(result.class).to eq(Array)
+        expect(result.length).to eq(2)
+        result.each_with_index do |r, i|
+          expect(r.class).to eq(Something)
+          expect(r.something_id).to eq((i+1).to_s)
+          expect(r.blah).to eq('1234')
+        end
+      end
 
-    it "can happen via .create" do
-      @test_obj.blah = '1234'
-      body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-      stub_post('/api/somethings/create').
-        with(:body => body_params).
-        to_return(:status => 200, :body => successful_something_response("1234"), :headers => { :content_type => 'application/xml' })
-      test_obj = Something.create(@client, :blah => '1234')
-      expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
-      expect(test_obj.something_id).to eq('1')
-    end
+      it "returns an empty array if it cant find anything" do
+        body_params = default_credentials.merge(:searchtext => '1234')
+        stub_get('/api/view/search/somethings').
+          with(:query => body_params).
+          to_return(:status => 200, :body => successful_empty_response, :headers => {:content_type => 'application/xml'})
+        result = Something.search(@client, '1234')
+        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(result.class).to eq(Array)
+        expect(result.length).to eq(0)
+      end
 
-    it "returns the object and has an error method" do
-      @test_obj.blah = '1234'
-      body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-      stub_post('/api/somethings/create').with(:body => body_params).to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => { :content_type => 'application/xml' })
-      test_obj = Something.create(@client, :blah => '1234')
-      expect(test_obj.something_id).to be_nil
-      expect(test_obj.errors.length).to eq(1)
-      error = test_obj.errors.first
-      expect(error.message).to eq("Invalid value passed for XMLString")
-      expect(error.code).to eq('2')
-      expect(error.status).to eq('0')
-      expect(error.http_status).to eq(500)
+      # TODO Needs to change because you'll have no idea an error happened
+      #
+      it "should return an empty array if theres an error" do
+        body_params = default_credentials.merge(:searchtext => '1234')
+        stub_get('/api/view/search/somethings').
+          with(:query => body_params).
+          to_return(:status => 500)
+        result = Something.search(@client, '1234')
+        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(result.class).to eq(Array)
+        expect(result.length).to eq(0)
+      end
     end
 
     def successful_something_response(blah_payload)
       "<Something><SomethingID>1</SomethingID><Blah>#{blah_payload}</Blah></Something>"
+    end
+
+    def successful_multiple_record_response(payload)
+      "<Response><Somethings uri='/api/views/search/somethings'><Something><SomethingID>1</SomethingID><Blah>#{payload}</Blah></Something><Something><SomethingID>2</SomethingID><Blah>#{payload}</Blah></Something></Somethings></Response>"
+    end
+
+    def successful_empty_response
+      "<Response><Somethings uri='/api/views/search/somethings'></Somethings></Response>"
     end
   end
 
