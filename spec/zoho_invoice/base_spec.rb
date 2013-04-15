@@ -38,7 +38,7 @@ describe ZohoInvoice::Base do
 
   describe "generating an xml representation" do
     before do
-      class Something < ZohoInvoice::Base
+      class ZohoInvoice::Something < ZohoInvoice::Base
         define_object_attrs :test_it,
           :blah,
           :something_id
@@ -47,7 +47,7 @@ describe ZohoInvoice::Base do
           :more_things
       end
 
-      @test_obj = Something.new(@client)
+      @test_obj = ZohoInvoice::Something.new(@client)
     end
 
     it "should specific an xml doctype" do
@@ -206,10 +206,10 @@ describe ZohoInvoice::Base do
   end
 
   describe "nested associations" do
-    class Tuna < ZohoInvoice::Base
+    class ZohoInvoice::Tuna < ZohoInvoice::Base
       define_object_attrs :blah
     end
-    class TestIt < ZohoInvoice::Base
+    class ZohoInvoice::TestIt < ZohoInvoice::Base
       has_many :tunas
     end
 
@@ -218,14 +218,14 @@ describe ZohoInvoice::Base do
     end
 
     it "can be created at initialization" do
-      test = TestIt.new(@client, :tunas => [{:blah => 1234}, Tuna.new(@client, :blah => 5678)])
+      test = ZohoInvoice::TestIt.new(@client, :tunas => [{:blah => 1234}, ZohoInvoice::Tuna.new(@client, :blah => 5678)])
       expect(test.tunas.length).to eq(2)
       expect(test.tunas.first.blah).to eq(1234)
       expect(test.tunas.last.blah).to eq(5678)
     end
 
     it "outputted when coverted to xml", :focus => true do
-      test = TestIt.new(@client, :tunas => [{:blah => 1234}])
+      test = ZohoInvoice::TestIt.new(@client, :tunas => [{:blah => 1234}])
       doc  = Nokogiri::XML(test.to_xml)
       expect(doc.xpath('//Tunas').length).to be >= 1
       expect(doc.xpath('//Tuna').length).to eq(1)

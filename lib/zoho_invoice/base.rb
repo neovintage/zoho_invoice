@@ -65,7 +65,7 @@ module ZohoInvoice
         self.reflections.each { |r| self.send("#{r}=", []) }
         (self.reflections & options.keys).each do |reflection|
           options[reflection].each do |reflection_obj|
-            klass = Kernel.const_get(camel_case(reflection.to_s[0..-2]))
+            klass = ZohoInvoice.const_get(camel_case(reflection.to_s[0..-2]))
             if reflection_obj.is_a?(Hash)
               self.send("#{reflection}") << klass.new(@client, reflection_obj)
             elsif reflection_obj.is_a?(klass)
@@ -149,7 +149,7 @@ module ZohoInvoice
 
     def build_attributes
       Nokogiri::XML::Builder.new do |xml|
-        xml.send("#{self.class}") {
+        xml.send("#{self.class.to_s.split('::').last}") {
           self.attributes.each do |attr|
             vals = self.send(attr)
             if !vals.nil? && !vals.is_a?(Array)
