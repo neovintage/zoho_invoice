@@ -109,7 +109,7 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
         stub_post('/api/somethings/create').
           with(:body => body_params).
-          to_return(:status => 200, :body => successful_something_response('5555'), :headers => {:content_type => 'application/xml'})
+          to_return(:status => 200, :body => fixture('successful_something_response'), :headers => {:content_type => 'application/xml'})
         @test_obj.save
         expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
       end
@@ -119,7 +119,7 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
         stub_post('/api/somethings/update').
           with(:body => body_params).
-          to_return(:status => 200, :body => successful_something_response('123456'), :headers => {:content_type => 'application/xml'})
+          to_return(:status => 200, :body => fixture('successful_something_response'), :headers => {:content_type => 'application/xml'})
         @test_obj.save
         expect(a_post('/api/somethings/update').with(:body => body_params)).to have_been_made
       end
@@ -129,7 +129,7 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
         stub_post('/api/somethings/create').
           with(:body => body_params).
-          to_return(:status => 200, :body => successful_something_response("1234"), :headers => { :content_type => 'application/xml' })
+          to_return(:status => 200, :body => fixture('successful_something_response'), :headers => { :content_type => 'application/xml' })
         test_obj = Something.create(@client, :blah => '1234')
         expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
         expect(test_obj.something_id).to eq('1')
@@ -156,7 +156,7 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:searchtext => '1234')
         stub_get('/api/view/search/somethings').
           with(:query => body_params).
-          to_return(:status => 200, :body => successful_single_record_response('1234'), :headers => {:content_type => 'application/xml'})
+          to_return(:status => 200, :body => fixture('successful_single_record_response'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
         expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
         expect(result.class).to eq(Array)
@@ -172,7 +172,7 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:searchtext => '1234')
         stub_get('/api/view/search/somethings').
           with(:query => body_params).
-          to_return(:status => 200, :body => successful_multiple_record_response('1234'), :headers => {:content_type => 'application/xml'})
+          to_return(:status => 200, :body => fixture('successful_multiple_record_response'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
         expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
         expect(result.class).to eq(Array)
@@ -188,7 +188,7 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:searchtext => '1234')
         stub_get('/api/view/search/somethings').
           with(:query => body_params).
-          to_return(:status => 200, :body => successful_empty_response, :headers => {:content_type => 'application/xml'})
+          to_return(:status => 200, :body => fixture('successful_empty_response'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
         expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
         expect(result.class).to eq(Array)
@@ -207,22 +207,6 @@ describe ZohoInvoice::Base do
         expect(result.class).to eq(Array)
         expect(result.length).to eq(0)
       end
-    end
-
-    def successful_something_response(blah_payload)
-      "<Something><SomethingID>1</SomethingID><Blah>#{blah_payload}</Blah></Something>"
-    end
-
-    def successful_single_record_response(payload)
-      "<Response><Somethings uri='/api/views/search/somethings'><Something><SomethingID>1</SomethingID><Blah>#{payload}</Blah></Something></Somethings></Response>"
-    end
-
-    def successful_multiple_record_response(payload)
-      "<Response><Somethings uri='/api/views/search/somethings'><Something><SomethingID>1</SomethingID><Blah>#{payload}</Blah></Something><Something><SomethingID>2</SomethingID><Blah>#{payload}</Blah></Something></Somethings></Response>"
-    end
-
-    def successful_empty_response
-      "<Response><Somethings uri='/api/views/search/somethings'></Somethings></Response>"
     end
   end
 
