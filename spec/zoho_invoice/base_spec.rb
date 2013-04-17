@@ -151,7 +151,24 @@ describe ZohoInvoice::Base do
     end
 
     describe "searching" do
-      it "returns an array if it can find anything" do
+
+      it "returns an array if it finds a single record" do
+        body_params = default_credentials.merge(:searchtext => '1234')
+        stub_get('/api/view/search/somethings').
+          with(:query => body_params).
+          to_return(:status => 200, :body => successful_single_record_response('1234'), :headers => {:content_type => 'application/xml'})
+        result = Something.search(@client, '1234')
+        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(result.class).to eq(Array)
+        expect(result.length).to eq(1)
+        result.each_with_index do |r, i|
+          expect(r.class).to eq(Something)
+          expect(r.something_id).to eq((i+1).to_s)
+          expect(r.blah).to eq('1234')
+        end
+      end
+
+      it "returns an array if it finds multiple records" do
         body_params = default_credentials.merge(:searchtext => '1234')
         stub_get('/api/view/search/somethings').
           with(:query => body_params).
@@ -194,6 +211,10 @@ describe ZohoInvoice::Base do
 
     def successful_something_response(blah_payload)
       "<Something><SomethingID>1</SomethingID><Blah>#{blah_payload}</Blah></Something>"
+    end
+
+    def successful_single_record_response(payload)
+      "<Response><Somethings uri='/api/views/search/somethings'><Something><SomethingID>1</SomethingID><Blah>#{payload}</Blah></Something></Somethings></Response>"
     end
 
     def successful_multiple_record_response(payload)
