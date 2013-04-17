@@ -36,6 +36,9 @@ module ZohoInvoice
       if objects_to_hydrate.nil?
         return []
       else
+        if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
+          objects_to_hydrate = [objects_to_hydrate]
+        end
         objects_to_hydrate.map do |result|
           new_hash = {}
           result.each do |key, value|
