@@ -33,20 +33,7 @@ module ZohoInvoice
     def self.search(client, input_text, options = {})
       result_hash = client.get("/api/view/search/#{self.to_s.split('::').last.downcase}s", :searchtext => input_text).body
       objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
-      if objects_to_hydrate.nil?
-        return []
-      else
-        if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
-          objects_to_hydrate = [objects_to_hydrate]
-        end
-        objects_to_hydrate.map do |result|
-          new_hash = {}
-          result.each do |key, value|
-            new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
-          end
-          self.new(client, new_hash)
-        end
-      end
+      self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       return []
     end
@@ -167,6 +154,25 @@ module ZohoInvoice
             end
           end
         }
+      end
+    end
+
+    private
+
+    def self.process_objects(client, objects_to_hydrate)
+      if objects_to_hydrate.nil?
+        return []
+      else
+        if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
+          objects_to_hydrate = [objects_to_hydrate]
+        end
+        objects_to_hydrate.map do |result|
+          new_hash = {}
+          result.each do |key, value|
+            new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
+          end
+          self.new(client, new_hash)
+        end
       end
     end
 
