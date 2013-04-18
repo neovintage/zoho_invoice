@@ -1,0 +1,12 @@
+<Response>
+  <Somethings uri='/api/views/search/somethings'>
+    <Something>
+      <SomethingID>1</SomethingID>
+      <Blah>1234</Blah>
+    </Something>
+    <Something>
+      <SomethingID>2</SomethingID>
+      <Blah>1234</Blah>
+    </Something>
+  </Somethings>
+</Response>
