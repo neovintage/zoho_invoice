@@ -21,5 +21,13 @@ module ZohoInvoice
 
     has_many :invoice_items
 
+    def self.find_by_customer_id(client, id, options = {})
+      result_hash = client.get("/api/view/invoices/customer/#{id}").body
+      objects_to_hydrate = result_hash['Response']["Invoices"]["Invoice"]
+      self.process_objects(client, objects_to_hydrate)
+    rescue Faraday::Error::ClientError => e
+      return []
+    end
+
   end
 end

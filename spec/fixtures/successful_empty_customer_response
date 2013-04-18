@@ -1,0 +1,3 @@
+<Response>
+  <Invoices uri='/api/views/invoices/customer/1234'></Invoices>
+</Response>
