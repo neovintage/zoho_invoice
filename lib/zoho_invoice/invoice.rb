@@ -23,7 +23,17 @@ module ZohoInvoice
 
     def self.find_by_customer_id(client, id, options = {})
       result_hash = client.get("/api/view/invoices/customer/#{id}").body
-      objects_to_hydrate = result_hash['Response']["Invoices"]["Invoice"]
+      potential_objects = result_hash['Response']["Invoices"]
+      objects_to_hydrate = potential_objects["Invoice"] if potential_objects
+      self.process_objects(client, objects_to_hydrate)
+    rescue Faraday::Error::ClientError => e
+      return []
+    end
+
+    def self.find_unpaid_by_customer_id(client, id, options = {})
+      result_hash = client.get("/api/view/invoices/unpaid/customer/#{id}").body
+      potential_objects = result_hash['Response']["Invoices"]
+      objects_to_hydrate = potential_objects["Invoice"] if potential_objects
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       return []

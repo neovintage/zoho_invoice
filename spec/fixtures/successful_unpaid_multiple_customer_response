@@ -1,12 +1,12 @@
 <Response>
-  <Invoices uri='/api/views/invoices/customer/1234'>
+  <Invoices uri='/api/views/invoices/unpaid/customer/1234'>
     <Invoice>
       <InvoiceID>1</InvoiceID>
       <Status>Open</Status>
     </Invoice>
     <Invoice>
       <InvoiceID>2</InvoiceID>
-      <Status>Closed</Status>
+      <Status>Overdue</Status>
     </Invoice>
   </Invoices>
 </Response>
