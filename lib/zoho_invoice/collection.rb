@@ -21,9 +21,5 @@ module ZohoInvoice
       @klass.create(@client, *args, &block)
     end
 
-    def find_by_customer_id(*args, &block)
-      @klass.find_by_customer_id(@client, *args, &block)
-    end
-
   end
 end
