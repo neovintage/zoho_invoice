@@ -4,6 +4,8 @@ require 'nokogiri'
 require 'multi_xml'
 
 require 'zoho_invoice/core_ext/string'
+require 'zoho_invoice/error'
+require 'zoho_invoice/error/client_error'
 
 require 'zoho_invoice/configurable'
 require 'zoho_invoice/auth_token'
