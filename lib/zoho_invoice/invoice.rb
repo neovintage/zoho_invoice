@@ -21,5 +21,43 @@ module ZohoInvoice
 
     has_many :invoice_items
 
+    def self.find_by_customer_id(client, id, options = {})
+      result_hash = client.get("/api/view/invoices/customer/#{id}").body
+      potential_objects = result_hash['Response']["Invoices"]
+      objects_to_hydrate = potential_objects["Invoice"] if potential_objects
+      self.process_objects(client, objects_to_hydrate)
+    rescue Faraday::Error::ClientError => e
+      if e.response[:body]
+        raise ZohoInvoice::Error::ClientError.from_response(e.response)
+      end
+    end
+
+    def self.find_by_multiple_customer_ids(client, ids, options={})
+      new_hash = {}
+      ids.each do |customer|
+        new_hash[customer] = self.find_by_customer_id(client, customer, options)
+      end
+      return new_hash
+    end
+
+    def self.find_unpaid_by_customer_id(client, id, options = {})
+      result_hash = client.get("/api/view/invoices/unpaid/customer/#{id}").body
+      potential_objects = result_hash['Response']["Invoices"]
+      objects_to_hydrate = potential_objects["Invoice"] if potential_objects
+      self.process_objects(client, objects_to_hydrate)
+    rescue Faraday::Error::ClientError => e
+      if e.response[:body]
+        raise ZohoInvoice::Error::ClientError.from_response(e.response)
+      end
+    end
+
+    def self.find_unpaid_by_multiple_customer_ids(client, ids, options={})
+      new_hash = {}
+      ids.each do |customer|
+        new_hash[customer] = self.find_unpaid_by_customer_id(client, customer, options)
+      end
+      return new_hash
+    end
+
   end
 end
