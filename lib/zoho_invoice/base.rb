@@ -1,7 +1,4 @@
 module ZohoInvoice
-  class Error < Struct.new(:message, :code, :status, :http_status)
-  end
-
   # Used for instances when some of the representations in zoho
   # dont have their own end points in the API
   #
@@ -35,7 +32,9 @@ module ZohoInvoice
       objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
-      return []
+      if e.response[:body]
+        return  ZohoInvoice::Error::ClientError.from_response(e.response)
+      end
     end
 
     def initialize(client, options = {})
@@ -74,14 +73,9 @@ module ZohoInvoice
       self.class.instance_variable_get(:'@attributes') || []
     end
 
-    def errors
-      @errors ||= []
-    end
-
     # TODO Determining the resource to use will need to change
     #
     def save
-      @errors = []
 
       action = 'create'
       action = 'update' if !send("#{self.class.to_s.split('::').last.downcase}_id").nil?
@@ -95,9 +89,8 @@ module ZohoInvoice
       self
     rescue Faraday::Error::ClientError => e
       if e.response[:body]
-        self.errors << process_error(e.response)
+        return  ZohoInvoice::Error::ClientError.from_response(e.response)
       end
-      return self
     end
 
     # This needs to be a Nokogiri::XML::Builder
@@ -114,21 +107,7 @@ module ZohoInvoice
 
   protected
 
-    def process_error(request_result)
-      self.class.process_error(request_result)
-    end
-
-    def self.process_error(request_result)
-      error = Error.new
-      response_body = request_result[:body]
-      error.status  = response_body['Response']['status']
-      error.code    = response_body['Response']['Code']
-      error.message = response_body['Response']['Message']
-      error.http_status = request_result[:status]
-      error
-    end
-
-    def self.camel_case(str)
+     def self.camel_case(str)
       return str if str !~ /_/ && str =~ /[A-Z]+.*/
       str.split('_').map{|e| e.capitalize}.join
     end
