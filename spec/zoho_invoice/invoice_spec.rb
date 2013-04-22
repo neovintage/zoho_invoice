@@ -8,57 +8,24 @@ describe ZohoInvoice::Invoice do
     end
 
     it "should return an array if a customer has a single invoice" do
-      stub_get('/api/view/invoices/customer/1234').
-        with(:query => default_credentials).
-        to_return(:status => 200, :body => fixture('successful_single_customer_response'), :headers => {:content_type => 'application/xml'})
-      result = ZohoInvoice::Invoice.find_by_customer_id(@client, '1234')
-      expect(a_get('/api/view/invoices/customer/1234').with(query: default_credentials)).to have_been_made
-      expect(result.class).to eq(Array)
-      expect(result.length).to eq(1)
-      result.each_with_index do |r, i|
-        expect(r.class).to eq(ZohoInvoice::Invoice)
-        expect(r.invoice_id).to eq((i+1).to_s)
-        expect(r.status).to match(/Draft|Open|Closed|Overdue|Void/)
-      end
+      invoice_test('/api/view/invoices/customer/1234', 'successful_single_customer_response', 1, /Draft|Open|Closed|Overdue|Void/, :find_by_customer_id, @client, '1234')
     end
 
     it "should return an array if a customer has multiple invoices" do
-      stub_get('/api/view/invoices/customer/1234').
-        with(:query => default_credentials).
-        to_return(:status => 200, :body => fixture('successful_multiple_customer_response'), :headers => {:content_type => 'application/xml'})
-      result = ZohoInvoice::Invoice.find_by_customer_id(@client, '1234')
-      expect(a_get('/api/view/invoices/customer/1234').with(query: default_credentials)).to have_been_made
-      expect(result.class).to eq(Array)
-      expect(result.length).to eq(2)
-      result.each_with_index do |r, i|
-        expect(r.class).to eq(ZohoInvoice::Invoice)
-        expect(r.invoice_id).to eq((i+1).to_s)
-        expect(r.status).to match(/Draft|Open|Closed|Overdue|Void/)
-      end
+      invoice_test('/api/view/invoices/customer/1234', 'successful_multiple_customer_response', 2, /Draft|Open|Closed|Overdue|Void/, :find_by_customer_id, @client, '1234')
     end
 
     it "should return an empty array if a customer doesn't have any invoices" do
-      stub_get('/api/view/invoices/customer/1234').
-        with(:query => default_credentials).
-        to_return(:status => 200, :body => fixture('successful_empty_customer_response'), :headers => {:content_type => 'application/xml'})
-      result = ZohoInvoice::Invoice.find_by_customer_id(@client, '1234')
-      expect(a_get('/api/view/invoices/customer/1234').with(query: default_credentials)).to have_been_made
-      expect(result.class).to eq(Array)
-      expect(result.length).to eq(0)
+      invoice_test('/api/view/invoices/customer/1234', 'successful_empty_customer_response', 0, //, :find_by_customer_id, @client, '1234')
     end
 
-    # TODO Needs to change because you'll have no idea an error happened
-    #
-    #it "should return an empty array if theres an error" do
-    #  body_params = default_credentials.merge(:searchtext => '1234')
-    #  stub_get('/api/view/search/somethings').
-    #    with(:query => body_params).
-    #    to_return(:status => 500)
-    #  result = Something.search(@client, '1234')
-    #  expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
-    #  expect(result.class).to eq(Array)
-    #  expect(result.length).to eq(0)
-    #end
+    it "should return an error if theres an error" do
+      error_test('/api/view/invoices/customer/1234', '500_internal_server_error', :find_by_customer_id, 'Invalid value passed for XMLString', '2', '0', 500, @client, '1234')
+    end
+
+    it "should return a hash if multiple customers are searched for" do
+      multiple_invoice_test('invoice_array', 2, :find_by_multiple_customer_ids, :find_by_customer_id, @client, [1234, 5678])
+    end
   end
 
   describe "searching by customer (unpaid)" do
@@ -67,58 +34,24 @@ describe ZohoInvoice::Invoice do
     end
 
     it "should return an array if a customer has a single unpaid invoice" do
-      stub_get('/api/view/invoices/unpaid/customer/1234').
-        with(:query => default_credentials).
-        to_return(:status => 200, :body => fixture('successful_unpaid_single_customer_response'), :headers => {:content_type => 'application/xml'})
-      result = ZohoInvoice::Invoice.find_unpaid_by_customer_id(@client, '1234')
-      expect(a_get('/api/view/invoices/unpaid/customer/1234').with(query: default_credentials)).to have_been_made
-      expect(result.class).to eq(Array)
-      expect(result.length).to eq(1)
-      result.each_with_index do |r, i|
-        expect(r.class).to eq(ZohoInvoice::Invoice)
-        expect(r.invoice_id).to eq((i+1).to_s)
-        expect(r.status).to match(/Open|Overdue/)
-      end
+      invoice_test('/api/view/invoices/unpaid/customer/1234', 'successful_unpaid_single_customer_response', 1, /Open|Overdue/, :find_unpaid_by_customer_id, @client, '1234')
     end
 
     it "should return an array if a customer has multiple unpaid invoices" do
-      stub_get('/api/view/invoices/unpaid/customer/1234').
-        with(:query => default_credentials).
-        to_return(:status => 200, :body => fixture('successful_unpaid_multiple_customer_response'), :headers => {:content_type => 'application/xml'})
-      result = ZohoInvoice::Invoice.find_unpaid_by_customer_id(@client, '1234')
-      expect(a_get('/api/view/invoices/unpaid/customer/1234').with(query: default_credentials)).to have_been_made
-      expect(result.class).to eq(Array)
-      expect(result.length).to eq(2)
-      result.each_with_index do |r, i|
-        expect(r.class).to eq(ZohoInvoice::Invoice)
-        expect(r.invoice_id).to eq((i+1).to_s)
-        expect(r.status).to match(/Open|Overdue/)
-      end
+      invoice_test('/api/view/invoices/unpaid/customer/1234', 'successful_unpaid_multiple_customer_response', 2, /Open|Overdue/, :find_unpaid_by_customer_id, @client, '1234')
     end
 
     it "should return an empty array if a customer doesn't have any unpaid invoices" do
-      stub_get('/api/view/invoices/unpaid/customer/1234').
-        with(:query => default_credentials).
-        to_return(:status => 200, :body => fixture('successful_unpaid_empty_customer_response'), :headers => {:content_type => 'application/xml'})
-      result = ZohoInvoice::Invoice.find_unpaid_by_customer_id(@client, '1234')
-      expect(a_get('/api/view/invoices/unpaid/customer/1234').with(query: default_credentials)).to have_been_made
-      expect(result.class).to eq(Array)
-      expect(result.length).to eq(0)
+      invoice_test('/api/view/invoices/unpaid/customer/1234', 'successful_unpaid_empty_customer_response', 0, //, :find_unpaid_by_customer_id, @client, '1234')
     end
 
-    # TODO Needs to change because you'll have no idea an error happened
-    #
-    #it "should return an empty array if theres an error" do
-    #  body_params = default_credentials.merge(:searchtext => '1234')
-    #  stub_get('/api/view/search/somethings').
-    #    with(:query => body_params).
-    #    to_return(:status => 500)
-    #  result = Something.search(@client, '1234')
-    #  expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
-    #  expect(result.class).to eq(Array)
-    #  expect(result.length).to eq(0)
-    #end
-  end
+    it "should return an error if theres an error" do
+      error_test('/api/view/invoices/unpaid/customer/1234', '500_internal_server_error', :find_unpaid_by_customer_id, 'Invalid value passed for XMLString', '2', '0', 500, @client, '1234')
+    end
 
+     it "should return a hash if multiple customers are searched for" do
+      multiple_invoice_test('invoice_array', 2, :find_unpaid_by_multiple_customer_ids, :find_unpaid_by_customer_id, @client, [1234, 5678])
+    end
+  end
 
 end

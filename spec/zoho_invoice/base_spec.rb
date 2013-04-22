@@ -140,14 +140,9 @@ describe ZohoInvoice::Base do
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
         stub_post('/api/somethings/create').with(:body => body_params).to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => { :content_type => 'application/xml' })
         test_obj = Something.create(@client, :blah => '1234')
-        expect(test_obj.something_id).to be_nil
-        expect(test_obj.errors.length).to eq(1)
-        error = test_obj.errors.first
-        expect(error.message).to eq("Invalid value passed for XMLString")
-        expect(error.code).to eq('2')
-        expect(error.status).to eq('0')
-        expect(error.http_status).to eq(500)
+        error_expectations(test_obj, 'Invalid value passed for XMLString', '2', '0', 500)
       end
+
     end
 
     describe "searching" do
@@ -195,17 +190,14 @@ describe ZohoInvoice::Base do
         expect(result.length).to eq(0)
       end
 
-      # TODO Needs to change because you'll have no idea an error happened
-      #
-      it "should return an empty array if theres an error" do
+      it "should return an error if theres an error" do
         body_params = default_credentials.merge(:searchtext => '1234')
         stub_get('/api/view/search/somethings').
           with(:query => body_params).
-          to_return(:status => 500)
+          to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
         expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
-        expect(result.class).to eq(Array)
-        expect(result.length).to eq(0)
+        error_expectations(result, 'Invalid value passed for XMLString', '2', '0', 500)
       end
     end
   end
