@@ -28,7 +28,7 @@ module ZohoInvoice
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       if e.response[:body]
-        return  ZohoInvoice::Error::ClientError.from_response(e.response)
+        raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
     end
 
@@ -47,7 +47,7 @@ module ZohoInvoice
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       if e.response[:body]
-        return ZohoInvoice::Error::ClientError.from_response(e.response)
+        raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
     end
 

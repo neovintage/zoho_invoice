@@ -41,7 +41,6 @@ end
 
 def multiple_invoice_test(fixture_to_use, num_customers, method_to_test, method_to_stub, *args)
   ZohoInvoice::Invoice.stub(method_to_stub).and_return([{'InvoiceID' => 1, 'CustomerName' => 'SampleName', 'Status' => 'Open', 'InvoiceDate' => 'January 1, 2013', 'Balance' => '$299.99'}])
-  #(fixture(fixture_to_use).read)
 
   result = ZohoInvoice::Invoice.send(method_to_test, args[0], args[1])
   expect(result.class).to eq(Hash)
@@ -58,9 +57,10 @@ def error_test(path, fixture_to_use, method_to_test, message, code, response_sta
   stub_get(path).
     with(:query => default_credentials).
     to_return(:status => 500, :body => fixture(fixture_to_use), :headers => { :content_type => 'application/xml' })
-  result = ZohoInvoice::Invoice.send(method_to_test, args[0], args[1])
+  expect { ZohoInvoice::Invoice.send(method_to_test, args[0], args[1]) }.to raise_error { |e|
+    error_expectations(e, message, code, response_status, http_status)
+  }
   expect(a_get(path).with(query: default_credentials)).to have_been_made
-  error_expectations(result, message, code, response_status, http_status)
 end
 
 def error_expectations(object, message, code, response_status, http_status)

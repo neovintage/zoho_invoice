@@ -139,8 +139,9 @@ describe ZohoInvoice::Base do
         @test_obj.blah = '1234'
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
         stub_post('/api/somethings/create').with(:body => body_params).to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => { :content_type => 'application/xml' })
-        test_obj = Something.create(@client, :blah => '1234')
-        error_expectations(test_obj, 'Invalid value passed for XMLString', '2', '0', 500)
+        expect { Something.create(@client, :blah => '1234') }.to raise_error { |e|
+          error_expectations(e, 'Invalid value passed for XMLString', '2', '0', 500)
+        }
       end
 
     end
@@ -195,9 +196,10 @@ describe ZohoInvoice::Base do
         stub_get('/api/view/search/somethings').
           with(:query => body_params).
           to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => {:content_type => 'application/xml'})
-        result = Something.search(@client, '1234')
+        expect { Something.search(@client, '1234') }.to raise_error { |e|
+          error_expectations(e, 'Invalid value passed for XMLString', '2', '0', 500)
+        }
         expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
-        error_expectations(result, 'Invalid value passed for XMLString', '2', '0', 500)
       end
     end
   end
