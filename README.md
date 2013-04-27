@@ -38,6 +38,24 @@ homebase $ irb
  => "blahblahblahnumbersnstuff"
 ```
 
+## Client Setup
+
+One of the great things about zoho_invoice is the ability for clients to inherit from a global config and override it if need be.
+
+```
+homebase $ irb
+> require 'zoho_invoice'
+ => true
+> ZohoInvoice.authtoken = 'first_authtoken'
+ => "first_authtoken"
+> ZohoInvoice.apikey = 'first_apikey'
+ => "first_apikey"
+> client = ZohoInvoice::Client.new
+ => #<ZohoInvoice::Client:0x007f9e6cf274b8 @authtoken="first_authtoken", @scope="invoiceapi", @apikey="first_apikey", @client_options={:url=>"https://invoice.zoho.com"}>
+> another_client = ZohoInvoice::Client.new(:authtoken => "override_authtoken")
+ => #<ZohoInvoice::Client:0x007f9e6cf395a0 @authtoken="override_authtoken", @scope="invoiceapi", @apikey="first_apikey", @client_options={:url=>"https://invoice.zoho.com"}>
+```
+
 ## Usage
 
 ```ruby
