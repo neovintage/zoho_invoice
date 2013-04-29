@@ -31,6 +31,7 @@ describe ZohoInvoice::Customer do
 
       result.each_with_index do |r, i|
         expect(r.class).to eq(ZohoInvoice::Customer)
+        expect(r.active.to_s).to match(/true|false/)
       end
     end
   end

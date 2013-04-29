@@ -23,7 +23,7 @@ module ZohoInvoice
     has_many :contacts
 
     def self.all(client, options = {})
-      retrieve(client, '/api/customers') + retrieve(client, '/api/customers/inactive')
+      self.all_active(client, options) + self.all_inactive(client, options)
     end
 
     def self.all_active(client, options = {})
