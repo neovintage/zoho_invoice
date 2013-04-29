@@ -138,6 +138,41 @@ module ZohoInvoice
 
     private
 
+    def self.retrieve(client, url)
+      klass = self.to_s.split('::').last
+      page = 1
+      query = {}
+      objects_to_hydrate = []
+
+      begin
+        result_hash = client.get(url, query).body
+        potential_objects = result_hash['Response'][klass + 's']
+
+        if potential_objects
+          potential_objects = potential_objects[klass]
+          if potential_objects.is_a? Hash
+            potential_objects = [potential_objects]
+          end
+          objects_to_hydrate += potential_objects
+        end
+
+        page_context = result_hash['Response']['PageContext']
+        if page_context
+          num_pages = page_context['Total_Pages'].to_i
+          page += 1
+          query = { :page => page }
+        else
+          num_pages = nil
+        end
+      end while num_pages && page <= num_pages
+
+      self.process_objects(client, objects_to_hydrate)
+    rescue Faraday::Error::ClientError => e
+      if e.response[:body]
+        raise ZohoInvoice::Error::ClientError.from_response(e.response)
+      end
+    end
+
     def self.process_objects(client, objects_to_hydrate)
       if objects_to_hydrate.nil?
         return []
