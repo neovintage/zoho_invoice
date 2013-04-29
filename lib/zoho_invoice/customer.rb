@@ -17,9 +17,22 @@ module ZohoInvoice
       :shipping_state,
       :shipping_country,
       :shipping_fax,
-      :customer_id
+      :customer_id,
+      :active
 
     has_many :contacts
+
+    def self.all(client, options = {})
+      self.all_active(client, options) + self.all_inactive(client, options)
+    end
+
+    def self.all_active(client, options = {})
+      retrieve(client, '/api/customers').each { |c| c.active = true }
+    end
+
+    def self.all_inactive(client, options = {})
+      retrieve(client, '/api/customers/inactive').each { |c| c.active = false }
+    end
 
   end
 end

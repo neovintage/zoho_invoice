@@ -53,6 +53,23 @@ def multiple_invoice_test(fixture_to_use, num_customers, method_to_test, method_
   end
 end
 
+def customer_test(path, fixture_to_use, num_customers, active, method_to_test, *args)
+  stub_get(path).
+    with(:query => default_credentials).
+    to_return(:status => 200, :body => fixture(fixture_to_use), :headers => {:content_type => 'application/xml'})
+  result = ZohoInvoice::Customer.send(method_to_test, args[0])
+  expect(a_get(path).with(:query => default_credentials)).to have_been_made
+  expect(result.class).to eq(Array)
+  expect(result.length).to eq(num_customers)
+  if num_customers > 0
+    result.each_with_index do |r, i|
+      expect(r.class).to eq(ZohoInvoice::Customer)
+      expect(r.customer_id).to eq((i+1).to_s)
+      expect(r.active).to be(active)
+    end
+  end
+end
+
 def error_test(path, fixture_to_use, method_to_test, message, code, response_status, http_status, *args)
   stub_get(path).
     with(:query => default_credentials).

@@ -1,0 +1,7 @@
+<Response>
+  <Customers uri='/api/customers'>
+    <Customer>
+      <CustomerID>1</CustomerID>
+    </Customer>
+  </Customers>
+</Response>

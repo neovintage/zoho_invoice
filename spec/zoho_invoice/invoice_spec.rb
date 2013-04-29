@@ -54,4 +54,31 @@ describe ZohoInvoice::Invoice do
     end
   end
 
+  describe "retrieving multiple pages" do
+    before do
+      @client = ZohoInvoice::Client.new(default_credentials)
+    end
+
+    it "should return all invoices from a paginated response" do
+      stub_get('/api/invoices/customer/1234').
+        with(:query => default_credentials).
+        to_return(:status => 200, :body => fixture('successful_multiple_page_response_page_1'), :headers => {:content_type => 'application/xml'})
+      
+      stub_get('/api/invoices/customer/1234').
+        with(:query => default_credentials.merge(:page => 2)).
+        to_return(:status => 200, :body => fixture('successful_multiple_page_response_page_2'), :headers => {:content_type => 'application/xml'})
+
+      result = ZohoInvoice::Invoice.send(:find_by_customer_id, @client, '1234')
+      expect(a_get('/api/invoices/customer/1234').with(:query => default_credentials)).to have_been_made
+      expect(a_get('/api/invoices/customer/1234').with(:query => default_credentials.merge(:page => 2))).to have_been_made
+      expect(result.class).to eq(Array)
+      expect(result.length).to eq(3)
+
+      result.each_with_index do |r, i|
+        expect(r.class).to eq(ZohoInvoice::Invoice)
+        expect(r.invoice_id).to eq((i+1).to_s)
+      end
+    end
+  end
+
 end
