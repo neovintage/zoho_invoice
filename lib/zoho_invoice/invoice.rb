@@ -45,7 +45,7 @@ module ZohoInvoice
       return new_hash
     end
 
-    def self.find_all(client)
+    def self.all(client)
       retrieve(client, '/api/invoices')
     end
 
