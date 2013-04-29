@@ -1,0 +1,15 @@
+<Response>
+  <Invoices uri='/api/invoices/customer/1234'>
+    <Invoice>
+      <InvoiceID>3</InvoiceID>
+      <Status>Open</Status>
+    </Invoice>
+  </Invoices>
+  <PageContext>
+    <Page>2</Page>
+    <Per_Page>2</Per_Page>
+    <Total>3</Total>
+    <Total_Pages>2</Total_Pages>
+  </PageContext>
+</Response>
+
