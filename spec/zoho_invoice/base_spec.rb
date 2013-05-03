@@ -77,6 +77,16 @@ describe ZohoInvoice::Base do
       expect(xml.xpath('//TestIt')).to be_empty
     end
 
+    it "should create id attributes correctly" do
+      @test_obj.something_id = '7890'
+      xml = Nokogiri::XML(@test_obj.to_xml)
+      expect(xml.xpath('//SomethingID').first.text).to eq('7890')
+
+      @test_obj.something_id = nil
+      xml = Nokogiri::XML(@test_obj.to_xml)
+      expect(xml.xpath('//SomethingID')).to be_empty
+    end
+
     it "should create the associations correctly" do
       class Thing < Struct.new(:stuff)
         def to_xml(*args)

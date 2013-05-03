@@ -107,9 +107,15 @@ module ZohoInvoice
 
   protected
 
-     def self.camel_case(str)
+    def self.camel_case(str)
       return str if str !~ /_/ && str =~ /[A-Z]+.*/
-      str.split('_').map{|e| e.capitalize}.join
+      str.split('_').map do |e|
+        if e == "id"
+          e.upcase
+        else
+          e.capitalize
+        end
+      end.join
     end
 
     def camel_case(str)
