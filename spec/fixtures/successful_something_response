@@ -1,4 +1,6 @@
-<Something>
-  <SomethingID>1</SomethingID>
-  <Blah>1234</Blah>
-</Something>
+<Response status="1">
+  <Something>
+    <SomethingID>1</SomethingID>
+    <Blah>1234</Blah>
+  </Something>
+</Response>

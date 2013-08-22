@@ -82,8 +82,8 @@ module ZohoInvoice
 
       result = client.post("/api/#{self.class.to_s.split('::').last.downcase + 's'}/#{action}", :XMLString => self.to_xml)
 
-      if action == 'create' && !result.body.nil? && !result.body[self.class.to_s].nil?
-        self.send("#{self.class.to_s.downcase}_id=", result.body[self.class.to_s]["#{self.class}ID"])
+      if action == 'create' && !result.body.nil? && !result.body['Response'][self.class.to_s].nil?
+        self.send("#{self.class.to_s.downcase}_id=", result.body['Response'][self.class.to_s]["#{self.class}ID"])
       end
 
       self
