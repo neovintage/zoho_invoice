@@ -77,13 +77,15 @@ module ZohoInvoice
     #
     def save
 
+      klass_name = self.class.to_s.split('::').last
+
       action = 'create'
-      action = 'update' if !send("#{self.class.to_s.split('::').last.downcase}_id").nil?
+      action = 'update' if !send("#{klass_name.downcase}_id").nil?
 
-      result = client.post("/api/#{self.class.to_s.split('::').last.downcase + 's'}/#{action}", :XMLString => self.to_xml)
+      result = client.post("/api/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
 
-      if action == 'create' && !result.body.nil? && !result.body['Response'][self.class.to_s].nil?
-        self.send("#{self.class.to_s.downcase}_id=", result.body['Response'][self.class.to_s]["#{self.class}ID"])
+      if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
+        self.send("#{self.class.to_s.downcase}_id=", result.body['Response'][klass_name]["#{klass_name}ID"])
       end
 
       self
