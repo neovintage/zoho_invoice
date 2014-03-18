@@ -1,5 +1,5 @@
 <Response>
-  <Somethings uri='/api/views/search/somethings'>
+  <Somethings uri='/api/v3/views/search/somethings'>
     <Something>
       <SomethingID>1</SomethingID>
       <Blah>1234</Blah>
