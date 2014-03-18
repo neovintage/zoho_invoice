@@ -28,7 +28,7 @@ module ZohoInvoice
     # TODO need to be able to handle associations when hydrating objects
     #
     def self.search(client, input_text, options = {})
-      result_hash = client.get("/api/view/search/#{self.to_s.split('::').last.downcase}s", :searchtext => input_text).body
+      result_hash = client.get("/api/v3/view/search/#{self.to_s.split('::').last.downcase}s", :searchtext => input_text).body
       objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
