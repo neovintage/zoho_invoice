@@ -157,10 +157,8 @@ module ZohoInvoice
         result_hash = client.get(url, query).body
         potential_objects = result_hash
 
-puts("POTENTIAL_OBJECTS=$#{potential_objects}$ ; CLASS=$#{potential_objects.class.to_s}$")
         if potential_objects
           potential_objects = potential_objects[klass_name]
-puts("POTENTIAL_OBJECTS[$#{klass_name}$]=$#{potential_objects}$ ; CLASS=$#{potential_objects.class.to_s}$")
           if potential_objects.is_a? Hash
             potential_objects = [potential_objects]
           end
@@ -168,10 +166,8 @@ puts("POTENTIAL_OBJECTS[$#{klass_name}$]=$#{potential_objects}$ ; CLASS=$#{poten
         end
 
         page_context = result_hash['page_context']
-puts("PAGE_CONTEXT=$#{page_context}$")
         if page_context
           has_more_page = page_context['has_more_page']
-puts("HAS_MORE_PAGE=$#{has_more_page}$")
           if(has_more_page)
             page += 1
             query = { :page => page }
@@ -181,7 +177,6 @@ puts("HAS_MORE_PAGE=$#{has_more_page}$")
         end
       end while has_more_page
 
-puts("OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$ ; CLASS=$#{objects_to_hydrate.class.to_s}$")
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       if e.response[:body]
@@ -193,19 +188,16 @@ puts("OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$ ; CLASS=$#{objects_to_hydrate.c
       if objects_to_hydrate.nil?
         return []
       else
-puts("IN SELF.PROCESS_OBJECTS: OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$ ; CLASS=$#{objects_to_hydrate.class.to_s}$")
         if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
-puts("IN SELF.PROCESS_OBJECTS: OBJECTS_TO_HYDRATE CLASS=HASH")
           objects_to_hydrate = [objects_to_hydrate]
         end
         objects_to_hydrate.map do |result|
           new_hash = {}
           result.each do |key, value|
-puts("IN SELF.PROCESS_OBJECTS: NEW_HASH: KEY=$#{key}$ ; TYPE=$#{key.class.to_s}$ ; VALUE=$#{value}$ ; CLASS=$#{value.class.to_s}$")
+            #<AlexSherstinsky>Since the response data is JSON, it is acceptable (and desirable) to allow Hash and Array field values.</AlexSherstinsky>
             #new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
             new_hash[key.to_underscore.to_sym] = value
           end
-puts("IN SELF.PROCESS_OBJECTS: NEW_HASH=$#{new_hash}$")
           self.new(client, new_hash)
         end
       end

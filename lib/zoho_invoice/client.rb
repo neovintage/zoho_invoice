@@ -41,6 +41,7 @@ module ZohoInvoice
         c.request :multipart
         c.request :url_encoded
 
+        #<AlexSherstinsky>The V3 Zoho API version returns data in the JSON format.</AlexSherstinsky>
         #c.response  :xml, :content_type => /\bxml$/
         c.response  :json, :content_type => /\bjson$/
 
