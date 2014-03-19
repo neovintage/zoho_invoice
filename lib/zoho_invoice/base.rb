@@ -179,8 +179,6 @@ module ZohoInvoice
 
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
-puts("ERROR=$#{e}$")
-puts("ERROR_RESPONSE=$#{e.response}$")
       if e.response && e.response[:body]
         raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
