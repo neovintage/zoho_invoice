@@ -147,7 +147,9 @@ module ZohoInvoice
     private
 
     def self.retrieve(client, url)
+puts("INVOICE.TO_S=$#{self.to_s}$")
       klass = self.to_s.split('::').last
+puts("KLASS=$#{klass}$")
       page = 1
       query = {}
       objects_to_hydrate = []
