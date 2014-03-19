@@ -24,18 +24,19 @@ module ZohoInvoice
       self.new(client, options).save
     end
 
-    # TODO need to build a class that is something like ActiveRecord::Relation
-    # TODO need to be able to handle associations when hydrating objects
-    #
-    def self.search(client, input_text, options = {})
-      result_hash = client.get("/api/v3/view/search/#{self.to_s.split('::').last.downcase}s", :searchtext => input_text).body
-      objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
-      self.process_objects(client, objects_to_hydrate)
-    rescue Faraday::Error::ClientError => e
-      if e.response && e.response[:body]
-        raise ZohoInvoice::Error::ClientError.from_response(e.response)
-      end
-    end
+    #<AlexSherstinsky>Commenting this out, since "search" does not seem to exist in the V3 API version..</AlexSherstinsky>
+    ## TODO need to build a class that is something like ActiveRecord::Relation
+    ## TODO need to be able to handle associations when hydrating objects
+    ##
+    #def self.search(client, input_text, options = {})
+    #  result_hash = client.get("/api/v3/view/search/#{self.to_s.split('::').last.downcase}s", :searchtext => input_text).body
+    #  objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
+    #  self.process_objects(client, objects_to_hydrate)
+    #rescue Faraday::Error::ClientError => e
+    #  if e.response && e.response[:body]
+    #    raise ZohoInvoice::Error::ClientError.from_response(e.response)
+    #  end
+    #end
 
     def initialize(client, options = {})
       @client = client
@@ -82,10 +83,18 @@ module ZohoInvoice
       action = 'create'
       action = 'update' if !send("#{klass_name.downcase}_id").nil?
 
-      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
+      #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
+      #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
+      client.post do |req|
+        req.url "/api/v3/#{klass_name.downcase + 's'}/#{action}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = self.to_json
+      end
 
-      if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
-        self.send("#{klass_name.downcase}_id=", result.body['Response'][klass_name]["#{klass_name}ID"])
+      #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
+      if action == 'create' && !result.body.nil? && !result.body[klass_name].nil?
+        #self.send("#{klass_name.downcase}_id=", result.body['Response'][klass_name]["#{klass_name}ID"])
+        self.send("#{klass_name.downcase}_id=", result.body[klass_name]["#{klass_name}ID"])
       end
 
       self
@@ -194,7 +203,7 @@ module ZohoInvoice
         objects_to_hydrate.map do |result|
           new_hash = {}
           result.each do |key, value|
-            #<AlexSherstinsky>Since the response data is JSON, it is acceptable (and desirable) to allow Hash and Array field values.</AlexSherstinsky>
+            #<AlexSherstinsky>Since the response data in V3 API version is JSON, it is acceptable (and desirable) to allow Hash and Array field values.</AlexSherstinsky>
             #new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
             new_hash[key.to_underscore.to_sym] = value
           end
