@@ -78,6 +78,7 @@ module ZohoInvoice
     #
     def save
 
+puts("KLASS_NAME=$#{self.class.to_s}$")
       klass_name = self.class.to_s.split('::').last
 
       action = 'create'
