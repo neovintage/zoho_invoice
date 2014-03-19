@@ -40,11 +40,11 @@ end
 
 if(:put == verb)
 conn = connection
-conn.post do |req|
+conn.put do |req|
 req.url(path)
 req.params = req.params.merge(credentials)
 req.body = "{\"JSONString\":\"#{inv_json}\"}"
-puts("VERB=$#{verb}$ ; CLASS=$#{verb.class.to_s}$ ; EXECUTING=$#{req.params}$")
+puts("VERB=$#{verb}$ ; EXECUTING=$#{req.params}$")
 end
 else
 connection.send(verb, path, params)
