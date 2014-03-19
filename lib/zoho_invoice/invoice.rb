@@ -13,7 +13,7 @@ module ZohoInvoice
       :p_o_number,            :balance,
       :status,                :notes,
       :customer_id,           :terms,
-      :customer_name,         :customfields,
+      :customer_name,         :custom_fields,
       :invoice_date,
       :payments_due,
       :due_date,
