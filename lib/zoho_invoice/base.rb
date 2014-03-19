@@ -154,6 +154,7 @@ module ZohoInvoice
 
       begin
         result_hash = client.get(url, query).body
+puts("RESULT_HASH=$#{result_hash}$")
         potential_objects = result_hash['Response'][klass + 's']
 
         if potential_objects
