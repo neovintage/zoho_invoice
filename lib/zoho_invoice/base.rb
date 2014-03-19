@@ -92,8 +92,7 @@ puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{i
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
 puts("INVOICE.TO_HASH=$#{self.to_hash}$")
 puts("INVOICE.TO_JSON=$#{self.to_json}$")
-      #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", self.to_hash)
-      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :XMLString => self.to_xml)
+      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", self.to_hash)
 puts("RESULT=$#{result}$")
 
       #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
@@ -114,8 +113,7 @@ puts("EXCEPTION=$#{e}$")
     # This needs to be a Nokogiri::XML::Builder
     #
     def to_xml(*args)
-      #build_attributes(false).to_xml(*args)
-      Hash.from_xml(build_hash.to_xml(*args))["#{self.class.to_s.split('::').last}"].to_xml(*args)
+      build_attributes(false).to_xml(*args)
     end
 
     #<AlexSherstinsky>This probably could be made much more efficient.</AlexSherstinsky>
