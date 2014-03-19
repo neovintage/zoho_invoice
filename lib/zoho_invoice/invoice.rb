@@ -49,5 +49,9 @@ module ZohoInvoice
       retrieve(client, '/api/v3/invoices')
     end
 
+    def self.find(client, id, options={})
+      retrieve(client, "/api/v3/invoices/#{id}")
+    end
+
   end
 end
