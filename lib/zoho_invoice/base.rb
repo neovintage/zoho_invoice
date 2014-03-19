@@ -160,14 +160,18 @@ puts("RESULT_HASH=$#{result_hash}$")
         #potential_objects = result_hash['Response'][klass_name + 's']
         #potential_objects = result_hash[klass_name.downcase + 's']
         potential_objects = result_hash
+puts("POTENTIAL_OBJECTS.CLASS=$#{potential_objects.class.to_s}$")
         klass_name = klass_name.downcase + 's'
 puts("KLASS_NAME_AGAIN=$#{klass_name}$")
 
         if potential_objects
           potential_objects = potential_objects[klass_name]
+puts("POTENTIAL_OBJECTS.CLASS_AGAIN=$#{potential_objects.class.to_s}$")
           if potential_objects.is_a? Hash
+puts("POTENTIAL_OBJECTS_IS_A_HASH")
             potential_objects = [potential_objects]
           end
+puts("POTENTIAL_OBJECTS_IS_NOT_A_HASH")
           objects_to_hydrate += potential_objects
         end
 
