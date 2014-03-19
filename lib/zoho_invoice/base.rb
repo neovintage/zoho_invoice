@@ -32,7 +32,7 @@ module ZohoInvoice
       objects_to_hydrate = result_hash['Response']["#{self.to_s.split('::').last}s"]["#{self.to_s.split('::').last}"]
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
-      if e.response[:body]
+      if e.response && e.response[:body]
         raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
     end
@@ -90,7 +90,7 @@ module ZohoInvoice
 
       self
     rescue Faraday::Error::ClientError => e
-      if e.response[:body]
+      if e.response && e.response[:body]
         raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
     end
