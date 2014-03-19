@@ -167,8 +167,10 @@ puts("POTENTIAL_OBJECTS=$#{potential_objects}$")
         end
 
         page_context = result_hash['page_context']
+puts("PAGE_CONTEXT=$#{page_context}$")
         if page_context
           has_more_page = page_context['has_more_page']
+puts("HAS_MORE_PAGE=$#{has_more_page}$")
           if(has_more_page)
             page += 1
             query = { :page => page }
