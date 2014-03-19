@@ -29,6 +29,7 @@ module ZohoInvoice
     end
 
     def request(verb, path, params={})
+puts("PARAMS_FOR_CONNECTION=$#{params}$")
       connection.send(verb, path, params)
     end
 
@@ -51,3 +52,10 @@ module ZohoInvoice
 
   end
 end
+#SHIT
+#conn.post do |req|
+#req.url '/nigiri'
+#req.headers['Content-Type'] = 'application/json'
+#req.body = '{ "name": "Unagi" }'
+#end
+#SHIT
