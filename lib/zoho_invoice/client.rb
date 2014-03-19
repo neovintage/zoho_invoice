@@ -34,8 +34,8 @@ module ZohoInvoice
 
     def request(verb, path, params={})
 params = {:JSONString => {"invoice_id"=>'480266000000071007', "total"=>0.0, "invoice_number"=>"INV-0010547", "balance"=>0.0, "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>'480266000000071001', "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}} if params[:JSONString]
-puts("VERB=$#{verb}$ ; PARAMS_FOR_POST_CONNECTION=$#{params}$")
-      connection.send(verb, path, params)
+puts("VERB=$#{verb}$ ; PARAMS_FOR_POST_CONNECTION=$#{params.to_json}$")
+      connection.send(verb, path, params.to_json)
     end
 
     private
