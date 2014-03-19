@@ -29,8 +29,16 @@ module ZohoInvoice
     end
 
     def request(verb, path, params={})
-puts("PARAMS_FOR_CONNECTION=$#{params}$")
-      connection.send(verb, path, params)
+      if(:post === verb)
+puts("PARAMS_FOR_POST_CONNECTION=$#{params}$")
+        connection.post do |request|
+          request.url(path)
+          request.headers['Content-Type'] = 'application/json'
+          request.body = params
+        end
+      else
+        connection.send(verb, path, params)
+      end
     end
 
     private
@@ -52,10 +60,3 @@ puts("PARAMS_FOR_CONNECTION=$#{params}$")
 
   end
 end
-#SHIT
-#conn.post do |req|
-#req.url '/nigiri'
-#req.headers['Content-Type'] = 'application/json'
-#req.body = '{ "name": "Unagi" }'
-#end
-#SHIT
