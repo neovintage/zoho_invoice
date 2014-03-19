@@ -85,11 +85,7 @@ module ZohoInvoice
 
       #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
-      client.post do |req|
-        req.url "/api/v3/#{klass_name.downcase + 's'}/#{action}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = self.to_json
-      end
+      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :JSONString => self.to_json)
 
       #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
       if action == 'create' && !result.body.nil? && !result.body[klass_name].nil?
