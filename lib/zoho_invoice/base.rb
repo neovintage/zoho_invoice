@@ -112,7 +112,7 @@ puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downca
     # This needs to be a Nokogiri::XML::Builder
     #
     def to_xml(*args)
-      build_attributes.to_xml(*args)
+      build_attributes(false).to_xml(*args)
     end
 
     #<AlexSherstinsky>This probably could be made much more efficient.</AlexSherstinsky>
@@ -124,7 +124,7 @@ puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downca
     # This needs to be a Nokogiri::XML::Builder
     #
     def to_hash(*args)
-      Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_attributes(false).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
