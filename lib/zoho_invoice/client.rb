@@ -35,10 +35,23 @@ module ZohoInvoice
     def request(verb, path, params={})
 if params[:JSONString]
 inv_json = {"invoice_id"=>'480266000000071007', "total"=>"0.0", "invoice_number"=>"INV-0010547", "balance"=>"0.0", "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>'480266000000071001', "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}.to_json
-params = credentials.merge({:JSONString => inv_json})
 puts("VERB=$#{verb}$ ; PARAMS_FOR_CONNECTION=$#{params}$")
 end
-      connection.send(verb, path, params)
+
+if(:put == verb)
+conn = connection
+conn.post do |req|
+req.url(path)
+req.params = req.params.merge(credentials)
+req.body = "{\"JSONString\":\"#{inv_json}\"}"
+puts("VERB=$#{verb}$ ; EXECUTING=$#{req.params}$")
+end
+else
+connection.send(verb, path, params)
+end
+
+
+      #connection.send(verb, path, params)
     end
 
     private
