@@ -90,7 +90,7 @@ puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{i
 
       #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
-      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", attributes)
+      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", self.to_json)
 puts("RESULT=$#{result}$")
 
       #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
@@ -111,6 +111,13 @@ puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downca
     #
     def to_xml(*args)
       build_attributes.to_xml(*args)
+    end
+
+    #<AlexSherstinsky>This probably could be made much more efficient.</AlexSherstinsky>
+    # This needs to be a Nokogiri::XML::Builder
+    #
+    def to_json(*args)
+      Hash.from_xml(build_attributes.to_xml(*args)).to_json
     end
 
     def self.create_attributes(attrs)
