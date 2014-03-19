@@ -147,45 +147,37 @@ module ZohoInvoice
     private
 
     def self.retrieve(client, url)
-puts("INVOICE.TO_S=$#{self.to_s}$")
       klass_name = self.to_s.split('::').last
-puts("KLASS_NAME=$#{klass_name}$")
       page = 1
       query = {}
       objects_to_hydrate = []
 
       begin
         result_hash = client.get(url, query).body
-puts("RESULT_HASH=$#{result_hash}$")
-        #potential_objects = result_hash['Response'][klass_name + 's']
-        #potential_objects = result_hash[klass_name.downcase + 's']
         potential_objects = result_hash
-puts("POTENTIAL_OBJECTS.CLASS=$#{potential_objects.class.to_s}$")
         klass_name = klass_name.downcase + 's'
-puts("KLASS_NAME_AGAIN=$#{klass_name}$")
 
         if potential_objects
           potential_objects = potential_objects[klass_name]
-puts("POTENTIAL_OBJECTS.CLASS_AGAIN=$#{potential_objects.class.to_s}$")
           if potential_objects.is_a? Hash
-puts("POTENTIAL_OBJECTS_IS_A_HASH")
             potential_objects = [potential_objects]
           end
-puts("POTENTIAL_OBJECTS_IS_NOT_A_HASH")
           objects_to_hydrate += potential_objects
         end
 
-        #page_context = result_hash['Response']['PageContext']
-        page_context = result_hash['PageContext']
+        page_context = result_hash['page_context']
         if page_context
-          num_pages = page_context['Total_Pages'].to_i
-          page += 1
-          query = { :page => page }
+          has_more_page = page_context['has_more_page']
+          if(has_more_page)
+            page += 1
+            query = { :page => page }
+          end
         else
-          num_pages = nil
+          has_more_page = false
         end
-      end while num_pages && page <= num_pages
+      end while has_more_page
 
+puts("OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$")
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       if e.response[:body]
