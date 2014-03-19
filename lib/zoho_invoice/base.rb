@@ -86,16 +86,18 @@ puts("KLASS_NAME=$#{klass_name}$")
       #action = 'create'
       #action = 'update' if !send("#{klass_name.downcase}_id").nil?
       invoice_id = send("#{klass_name.downcase}_id")
-puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}")
+puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}$")
 
       #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
       result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
+puts("RESULT=$#{result}$")
 
       #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
-      if action == 'create' && !result.body.nil? && !result.body[klass_name].nil?
+      if invoice_id.blank? && !result.body.nil? && !result.body[klass_name].nil?
         #self.send("#{klass_name.downcase}_id=", result.body['Response'][klass_name]["#{klass_name}ID"])
-        self.send("#{klass_name.downcase}_id=", result.body[klass_name]["#{klass_name}ID"])
+puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downcase]["#{klass_name.downcase}_id"]}$")
+        self.send("#{klass_name.downcase}_id=", result.body[klass_name.downcase]["#{klass_name.downcase}_id"])
       end
 
       self
