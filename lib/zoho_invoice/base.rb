@@ -92,7 +92,11 @@ puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{i
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
 puts("INVOICE.TO_HASH=$#{self.to_hash}$")
 puts("INVOICE.TO_JSON=$#{self.to_json}$")
-      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", self.to_hash)
+      if(invoice_id.blank?)
+      result = client.post("/api/v3/#{klass_name.downcase + 's'}", :JSONString => self.to_hash.to_json)
+      else
+      result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_hash.to_json)
+      end
 puts("RESULT=$#{result}$")
 
       #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?

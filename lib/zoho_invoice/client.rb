@@ -28,19 +28,13 @@ module ZohoInvoice
       request(:post, path, credentials.merge(params))
     end
 
+    def put(path, params={})
+      request(:put, path, credentials.merge(params))
+    end
+
     def request(verb, path, params={})
-      if(:post === verb)
 puts("PARAMS_FOR_POST_CONNECTION=$#{params}$")
-connection.send(verb, path, params)
-#        connection.post do |request|
-#          request.url(path)
-#          request.headers['Content-Type'] = 'application/json'
-#puts("PARAMS_JSON_FOR_POST_CONNECTION=$#{params.to_json}$")
-#          request.body = params.to_json
-#        end
-      else
-        connection.send(verb, path, params)
-      end
+      connection.send(verb, path, params)
     end
 
     private
