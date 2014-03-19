@@ -148,8 +148,8 @@ module ZohoInvoice
 
     def self.retrieve(client, url)
 puts("INVOICE.TO_S=$#{self.to_s}$")
-      klass = self.to_s.split('::').last
-puts("KLASS=$#{klass}$")
+      klass_name = self.to_s.split('::').last
+puts("KLASS_NAME=$#{klass_name}$")
       page = 1
       query = {}
       objects_to_hydrate = []
@@ -157,10 +157,11 @@ puts("KLASS=$#{klass}$")
       begin
         result_hash = client.get(url, query).body
 puts("RESULT_HASH=$#{result_hash}$")
-        potential_objects = result_hash['Response'][klass + 's']
+        #potential_objects = result_hash['Response'][klass_name + 's']
+        potential_objects = result_hash[klass_name.downcase + 's']
 
         if potential_objects
-          potential_objects = potential_objects[klass]
+          potential_objects = potential_objects[klass_name]
           if potential_objects.is_a? Hash
             potential_objects = [potential_objects]
           end
