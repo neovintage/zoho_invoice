@@ -202,7 +202,8 @@ puts("IN SELF.PROCESS_OBJECTS: OBJECTS_TO_HYDRATE CLASS=HASH")
           new_hash = {}
           result.each do |key, value|
 puts("IN SELF.PROCESS_OBJECTS: NEW_HASH: KEY=$#{key}$ ; TYPE=$#{key.class.to_s}$ ; VALUE=$#{value}$ ; CLASS=$#{value.class.to_s}$")
-            new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
+            #new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
+            new_hash[key.to_underscore.to_sym] = value
           end
 puts("IN SELF.PROCESS_OBJECTS: NEW_HASH=$#{new_hash}$")
           self.new(client, new_hash)
