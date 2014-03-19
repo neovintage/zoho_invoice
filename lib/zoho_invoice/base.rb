@@ -158,7 +158,10 @@ puts("KLASS_NAME=$#{klass_name}$")
         result_hash = client.get(url, query).body
 puts("RESULT_HASH=$#{result_hash}$")
         #potential_objects = result_hash['Response'][klass_name + 's']
-        potential_objects = result_hash[klass_name.downcase + 's']
+        #potential_objects = result_hash[klass_name.downcase + 's']
+        potential_objects = result_hash
+        klass_name = klass_name.downcase + 's'
+puts("KLASS_NAME_AGAIN=$#{klass_name}$")
 
         if potential_objects
           potential_objects = potential_objects[klass_name]
