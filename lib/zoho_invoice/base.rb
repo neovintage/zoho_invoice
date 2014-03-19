@@ -82,8 +82,11 @@ puts("CLASS_NAME=$#{self.class.to_s}$")
       klass_name = self.class.to_s.split('::').last
 puts("KLASS_NAME=$#{klass_name}$")
 
-      action = 'create'
-      action = 'update' if !send("#{klass_name.downcase}_id").nil?
+      #action = 'create'
+      #action = 'update' if !send("#{klass_name.downcase}_id").nil?
+      action = ''
+      action = "#{klass_name.downcase}_id" if !send("#{klass_name.downcase}_id").nil?
+puts("OBJECT_ID=$#{send("#{klass_name.downcase}_id")}$ ; ACTION=$#{action}$")
 
       #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
