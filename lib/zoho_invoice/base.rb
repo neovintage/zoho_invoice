@@ -124,7 +124,8 @@ puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downca
     # This needs to be a Nokogiri::XML::Builder
     #
     def to_hash(*args)
-      Hash.from_xml(build_attributes(false).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_hash.to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -179,6 +180,26 @@ puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downca
                   self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
                 }
               end
+            end
+          end
+        }
+      end
+    end
+
+    def build_hash
+      Nokogiri::XML::Builder.new do |xml|
+        xml.send("#{self.class.to_s.split('::').last}") {
+          self.attributes.each do |attr|
+            vals = self.send(attr)
+            if !vals.nil? && !vals.is_a?(Array)
+              xml.send("#{attr.to_s}_", self.send(attr))
+            end
+          end
+          self.reflections.each do |refl|
+            if !refl.empty?
+              xml.send(refl.to_s) {
+                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
+              }
             end
           end
         }
