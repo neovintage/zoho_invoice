@@ -157,9 +157,10 @@ module ZohoInvoice
         potential_objects = result_hash
         klass_name = klass_name.downcase + 's'
 
-puts("POTENTIAL_OBJECTS=$#{potential_objects}$")
+puts("POTENTIAL_OBJECTS=$#{potential_objects}$ ; CLASS=$#{potential_objects.class.to_s}$")
         if potential_objects
           potential_objects = potential_objects[klass_name]
+puts("POTENTIAL_OBJECTS[$#{klass_name}$]=$#{potential_objects}$ ; CLASS=$#{potential_objects.class.to_s}$")
           if potential_objects.is_a? Hash
             potential_objects = [potential_objects]
           end
