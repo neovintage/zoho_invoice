@@ -85,13 +85,12 @@ puts("KLASS_NAME=$#{klass_name}$")
       #<AlexSherstinsky>Commenting the next two lines out, since the V3 API version uses the RESTful URLs.</AlexSherstinsky>
       #action = 'create'
       #action = 'update' if !send("#{klass_name.downcase}_id").nil?
-      action = ''
-      action = "#{klass_name.downcase}_id" if !send("#{klass_name.downcase}_id").nil?
-puts("OBJECT_ID=$#{send("#{klass_name.downcase}_id")}$ ; ACTION=$#{action}$")
+      invoice_id = send("#{klass_name.downcase}_id")
+puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}")
 
       #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
-      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :JSONString => self.to_json)
+      result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
 
       #if action == 'create' && !result.body.nil? && !result.body['Response'][klass_name].nil?
       if action == 'create' && !result.body.nil? && !result.body[klass_name].nil?
