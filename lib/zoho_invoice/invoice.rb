@@ -22,7 +22,7 @@ module ZohoInvoice
     has_many :invoice_items
 
     def self.find_by_customer_id(client, id, options = {})
-      retrieve(client, "/api/v3/invoices/customer/#{id}")
+      retrieve(client, "/api/v3/invoices/customer/#{id}", false)
     end
 
     def self.find_by_multiple_customer_ids(client, ids, options={})
@@ -34,7 +34,7 @@ module ZohoInvoice
     end
 
     def self.find_unpaid_by_customer_id(client, id, options = {})
-      retrieve(client, "/api/v3/invoices/unpaid/customer/#{id}")
+      retrieve(client, "/api/v3/invoices/unpaid/customer/#{id}", false)
     end
 
     def self.find_unpaid_by_multiple_customer_ids(client, ids, options={})
@@ -50,7 +50,7 @@ module ZohoInvoice
     end
 
     def self.find(client, id, options={})
-      retrieve(client, "/api/v3/invoices/#{id}")
+      retrieve(client, "/api/v3/invoices/#{id}", false)
     end
 
   end
