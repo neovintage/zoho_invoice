@@ -175,7 +175,8 @@ puts("POTENTIAL_OBJECTS_IS_NOT_A_HASH")
           objects_to_hydrate += potential_objects
         end
 
-        page_context = result_hash['Response']['PageContext']
+        #page_context = result_hash['Response']['PageContext']
+        page_context = result_hash['PageContext']
         if page_context
           num_pages = page_context['Total_Pages'].to_i
           page += 1
