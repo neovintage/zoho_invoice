@@ -34,7 +34,7 @@ puts("PARAMS_FOR_POST_CONNECTION=$#{params}$")
         connection.post do |request|
           request.url(path)
           request.headers['Content-Type'] = 'application/json'
-          request.body = params
+          request.body = params.to_json
         end
       else
         connection.send(verb, path, params)
