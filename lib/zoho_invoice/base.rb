@@ -144,20 +144,35 @@ puts("LEFT=$#{klass_name.downcase}_id=$ ; RIGHT=$#{result.body[klass_name.downca
       self.class.camel_case(str)
     end
 
-    def build_attributes
+    def build_attributes(use_json = true)
       Nokogiri::XML::Builder.new do |xml|
         xml.send("#{self.class.to_s.split('::').last}") {
           self.attributes.each do |attr|
             vals = self.send(attr)
-            if !vals.nil? && !vals.is_a?(Array)
-              xml.send("#{camel_case(attr.to_s)}_", self.send(attr))
+            if(use_json)
+              #<AlexSherstinsky>Since the response data in V3 API version is JSON, it is acceptable (and desirable) to allow Array field values.</AlexSherstinsky>
+              if !vals.nil?
+                xml.send("#{attr.to_s}_", self.send(attr))
+              end
+            else
+              if !vals.nil? && !vals.is_a?(Array)
+                xml.send("#{camel_case(attr.to_s)}_", self.send(attr))
+              end
             end
           end
           self.reflections.each do |refl|
-            if !refl.empty?
-              xml.send(camel_case(refl.to_s)) {
-                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
-              }
+            if(use_json)
+              if !refl.empty?
+                xml.send(refl.to_s) {
+                  self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
+                }
+              end
+            else
+              if !refl.empty?
+                xml.send(camel_case(refl.to_s)) {
+                  self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
+                }
+              end
             end
           end
         }
