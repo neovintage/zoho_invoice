@@ -24,7 +24,7 @@ module ZohoInvoice
       self.new(client, options).save
     end
 
-    #<AlexSherstinsky>Commenting this out, since "search" does not seem to exist in the V3 API version..</AlexSherstinsky>
+    #<AlexSherstinsky>Commenting this out, since "search" does not seem to exist in the V3 API version.</AlexSherstinsky>
     ## TODO need to build a class that is something like ActiveRecord::Relation
     ## TODO need to be able to handle associations when hydrating objects
     ##
@@ -82,6 +82,7 @@ puts("CLASS_NAME=$#{self.class.to_s}$")
       klass_name = self.class.to_s.split('::').last
 puts("KLASS_NAME=$#{klass_name}$")
 
+      #<AlexSherstinsky>Commenting the next two lines out, since the V3 API version uses the RESTful URLs.</AlexSherstinsky>
       #action = 'create'
       #action = 'update' if !send("#{klass_name.downcase}_id").nil?
       action = ''
