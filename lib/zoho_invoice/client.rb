@@ -44,7 +44,7 @@ conn.post do |req|
 req.url(path)
 req.params = req.params.merge(credentials)
 req.body = "{\"JSONString\":\"#{inv_json}\"}"
-puts("VERB=$#{verb}$ ; EXECUTING=$#{req.params}$")
+puts("VERB=$#{verb}$ ; CLASS=$#{verb.class.to_s}$ ; EXECUTING=$#{req.params}$")
 end
 else
 connection.send(verb, path, params)
