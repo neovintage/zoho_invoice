@@ -41,7 +41,8 @@ module ZohoInvoice
         c.request :multipart
         c.request :url_encoded
 
-        c.response  :xml, :content_type => /\bxml$/
+        #c.response  :xml, :content_type => /\bxml$/
+        c.response  :json, :content_type => /\bjson$/
 
         c.adapter Faraday.default_adapter
       end
