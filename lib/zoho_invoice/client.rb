@@ -35,6 +35,7 @@ module ZohoInvoice
     private
 
     def connection
+puts("FARADAY_CLIENT_OPTIONS=$#{@client_options}$")
       @connection ||= Faraday.new(@client_options) do |c|
         c.use       Faraday::Response::RaiseError
 
