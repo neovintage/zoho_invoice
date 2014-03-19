@@ -90,6 +90,7 @@ puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{i
 
       #<AlexSherstinsky>The response data in V3 API version is JSON.</AlexSherstinsky>
       #result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{action}", :XMLString => self.to_xml)
+puts("INVOICE.TO_HASH=$#{self.to_hash}$")
       result = client.post("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", self.to_hash)
 puts("RESULT=$#{result}$")
 
