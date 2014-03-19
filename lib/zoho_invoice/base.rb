@@ -180,7 +180,7 @@ puts("HAS_MORE_PAGE=$#{has_more_page}$")
         end
       end while has_more_page
 
-puts("OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$")
+puts("OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$ ; CLASS=$#{objects_to_hydrate.class.to_s}$")
       self.process_objects(client, objects_to_hydrate)
     rescue Faraday::Error::ClientError => e
       if e.response[:body]
@@ -192,14 +192,18 @@ puts("OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$")
       if objects_to_hydrate.nil?
         return []
       else
+puts("IN SELF.PROCESS_OBJECTS: OBJECTS_TO_HYDRATE=$#{objects_to_hydrate}$ ; CLASS=$#{objects_to_hydrate.class.to_s}$")
         if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
+puts("IN SELF.PROCESS_OBJECTS: OBJECTS_TO_HYDRATE CLASS=HASH")
           objects_to_hydrate = [objects_to_hydrate]
         end
         objects_to_hydrate.map do |result|
           new_hash = {}
           result.each do |key, value|
+puts("IN SELF.PROCESS_OBJECTS: NEW_HASH: KEY=$#{key}$ ; TYPE=$#{key.class.to_s}$ ; VALUE=$#{value}$ ; CLASS=$#{value.class.to_s}$")
             new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
           end
+puts("IN SELF.PROCESS_OBJECTS: NEW_HASH=$#{new_hash}$")
           self.new(client, new_hash)
         end
       end
