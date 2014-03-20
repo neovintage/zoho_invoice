@@ -250,8 +250,6 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
       g
     end
 
-    private
-
     def self.stringify_object_values(obj)
       return(obj.to_s) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       res = nil
@@ -264,6 +262,8 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
       end
       res
     end
+
+    private
 
     def self.retrieve(client, url, plural = true)
       klass_name = self.to_s.split('::').last.downcase
