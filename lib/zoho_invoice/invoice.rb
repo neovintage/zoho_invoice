@@ -8,7 +8,7 @@ module ZohoInvoice
     ATTRIBUTES_ALLOWED_FOR_CREATE = [:additional_field1, :adjustment, :adjustment_description, :allow_partial_payments, :contact_persons, :date, :description, :discount, :discount_type, :expense_id, :gateway_name, :invoiced_estimate_id, :is_discount_before_tax, :item_id, :line_items, :name, :payment_gateways, :payment_options, :payment_terms, :payment_terms_label, :project_id, :quantity, :rate, :recurring_invoice_id, :salesperson_name, :shipping_charge, :tax_id, :template_id, :time_entry_ids, :unit]
     ATTRIBUTES_ALLOWED_FOR_UPDATE = [:additional_field1, :adjustment, :adjustment_description, :allow_partial_payments, :contact_persons, :date, :description, :discount, :discount_type, :expense_id, :gateway_name, :is_discount_before_tax, :item_id, :line_item_id, :line_items, :name, :payment_gateways, :payment_options, :payment_terms, :payment_terms_label, :quantity, :rate, :salesperson_name, :shipping_charge, :tax_id, :template_id, :unit]
 
-    define_object_attrs((LEGACY_ATTRIBUTES + ATTRIBUTES_ALLOWED_FOR_CREATE + ATTRIBUTES_ALLOWED_FOR_UPDATE).uniq)
+    define_object_attrs(*((LEGACY_ATTRIBUTES + ATTRIBUTES_ALLOWED_FOR_CREATE + ATTRIBUTES_ALLOWED_FOR_UPDATE).uniq))
 
     has_many :invoice_items
 
