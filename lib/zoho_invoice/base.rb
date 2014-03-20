@@ -96,8 +96,7 @@ puts("INVOICE.TO_JSON=$#{self.to_json}$")
       if(invoice_id.blank?)
       result = client.post("/api/v3/#{klass_name.downcase + 's'}", :JSONString => self.to_json)
       else
-      #result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
-    result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_hash)
+      result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
       end
 puts("RESULT=$#{result}$")
 

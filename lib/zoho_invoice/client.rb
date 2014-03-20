@@ -38,7 +38,7 @@ if params[:JSONString]
 #test_json = {"total"=>"0.0", "invoice_number"=>"INV-0010547", "balance"=>"0.0", "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>"480266000000071001", "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}.to_json
 test_json = {"notes"=>"Thanks for your business.", "customer_id"=>"480266000000071001", "terms"=>"Alex Test 4"}.to_json
 puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
-actual_json = params
+actual_json = params.to_json
 puts("VERB=$#{verb}$ ; PARAMS_FOR_CONNECTION=$#{params}$")
 puts("VERB=$#{verb}$ ; ACTUAL_JSON=$#{actual_json}$")
 connection.send(verb, path, credentials.merge({:JSONString => actual_json}))
