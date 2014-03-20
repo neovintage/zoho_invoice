@@ -93,9 +93,9 @@ puts("INVOICE_ID=$#{invoice_id}$ ; URL=$/api/v3/#{klass_name.downcase + 's'}/#{i
 puts("INVOICE.TO_HASH=$#{self.to_hash}$")
 puts("INVOICE.TO_JSON=$#{self.to_json}$")
       if(invoice_id.blank?)
-      result = client.post("/api/v3/#{klass_name.downcase + 's'}", :JSONString => self.to_hash.to_json)
+      result = client.post("/api/v3/#{klass_name.downcase + 's'}", :JSONString => self.to_json)
       else
-      result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_hash.to_json)
+      result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
       end
 puts("RESULT=$#{result}$")
 
@@ -194,12 +194,14 @@ puts("EXCEPTION=$#{e}$")
     def build_hash
       Nokogiri::XML::Builder.new do |xml|
         xml.send("#{self.class.to_s.split('::').last}") {
+puts("ATTRIBUTES=$#{self.attributes}$")
           self.attributes.each do |attr|
             vals = self.send(attr)
             if !vals.nil? && !vals.is_a?(Array)
               xml.send("#{attr.to_s}_", self.send(attr))
             end
           end
+puts("REFLECTIONS=$#{self.reflections}$")
           self.reflections.each do |refl|
             if !refl.empty?
               xml.send(refl.to_s) {
