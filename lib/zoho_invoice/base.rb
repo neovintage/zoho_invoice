@@ -134,7 +134,8 @@ h.to_json
     #
     def to_hash(*args)
       #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
-      Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      #Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_simple_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -222,6 +223,29 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
           end
         }
       end
+    end
+
+    def build_simple_hash(attrs)
+      h = {}
+puts("ATTRIBUTES=$#{attrs}$")
+      attrs.each do |attr|
+        vals = self.send(attr)
+        if !vals.nil?
+          h["#{attr.to_s}"] = vals
+        end
+puts("REFLECTIONS=$#{self.reflections}$")
+        self.reflections.each do |refl|
+          refl_val = self.send(refl)
+puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{refl_val.blank?}$")
+          if !refl_val.empty?
+            refl_a = []
+            refl_val.each {|r| refl_h << r}
+            h[refl] = refl_a
+          end
+        end
+        g = {}
+        g[self.class.to_s.split('::').last] = h
+        g
     end
 
     private
