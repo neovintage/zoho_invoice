@@ -134,8 +134,7 @@ h.to_json
     #
     def to_hash(*args)
       #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
-      #Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
-Hash.from_xml(build_hash(ZohoInvoice::Invoice::READ_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -203,7 +202,8 @@ puts("ATTRIBUTES=$#{attrs}$")
           attrs.each do |attr|
             vals = self.send(attr)
             #<AlexSherstinsky>Since the response data in V3 API version is JSON, it is acceptable (and desirable) to allow Array field values.</AlexSherstinsky>
-            if !vals.nil? && !vals.is_a?(Array)
+            #if !vals.nil? && !vals.is_a?(Array)
+            if !vals.nil?
               xml.send("#{attr.to_s}_", self.send(attr))
             end
           end
