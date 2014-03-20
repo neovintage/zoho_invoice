@@ -231,7 +231,7 @@ puts("ATTRIBUTES=$#{attrs}$")
       attrs.each do |attr|
         vals = self.send(attr)
         if !vals.nil?
-        #if !vals.nil? && !vals.is_a?(Array)
+          vals = stringify_object_values(vals)
           h["#{attr.to_s}"] = vals
         end
       end
@@ -251,6 +251,20 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
     end
 
     private
+
+    def self.stringify_object_values(obj)
+      return(obj.to_s) unless(obj.is_a?(Array) || obj.is_a?(Hash))
+      res = nil
+      if(obj.is_a?(Array))
+        res = []
+        obj.each {|elt| res << stringify_object_values(elt)}
+      elsif
+      if(obj.is_a?(Hash))
+        res = {}
+        obj.each {|key, elt| res[key] = stringify_object_values(elt)}
+      end
+      res
+    end
 
     def self.retrieve(client, url, plural = true)
       klass_name = self.to_s.split('::').last.downcase
