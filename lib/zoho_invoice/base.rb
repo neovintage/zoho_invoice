@@ -123,7 +123,10 @@ puts("EXCEPTION=$#{e}$")
 
     #<AlexSherstinsky>This probably could be made much more efficient.</AlexSherstinsky>
     def to_json(*args)
-      to_hash(*args).to_json
+h = to_hash(*args)
+puts("GOT_HASH=$#{h}$ ; JSON_OUT_OF_HASH=$#{h.to_json}$")
+h.to_json
+      #to_hash(*args).to_json
     end
 
     #<AlexSherstinsky>This probably could be made much more efficient.</AlexSherstinsky>
