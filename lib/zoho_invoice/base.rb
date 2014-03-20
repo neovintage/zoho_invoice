@@ -195,7 +195,7 @@ h.to_json
       end
     end
 
-    def build_hash(attrs, include_reflections = false)
+    def build_hash(attrs, include_reflections = true)
       Nokogiri::XML::Builder.new do |xml|
         xml.send("#{self.class.to_s.split('::').last}") {
 puts("ATTRIBUTES=$#{attrs}$")
@@ -207,6 +207,7 @@ puts("ATTRIBUTES=$#{attrs}$")
           end
 puts("REFLECTIONS=$#{self.reflections}$")
           (self.reflections.each do |refl|
+puts("REFLECTION=$#{refl}$ ; EMPTY=$#{refl.empty?} ; BLANK?=$#{refl.blank?}$")
             if !refl.empty?
               xml.send(refl.to_s) {
                 self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
