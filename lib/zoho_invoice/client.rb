@@ -46,8 +46,8 @@ conn.put do |req|
 req.url(path)
 req.params = req.params.merge(credentials)
 #req.body = "JSONString=#{inv_json}"
-req.body = "JSONString={\"customer_id\":\"480266000000071001\", \"notes\":\"Alex Test 5\"}"
-puts("VERB=$#{verb}$ ; EXECUTING=$#{req.params}$ ; REQ.BODY=$#{req.body}$")
+req.body = "JSONString={\"customer_id\":\"480266000000071001\", \"notes\":\"Alex Test 3\"}"
+puts("VERB=$#{verb}$ ; PATH=$#{path}$ ; URL=$#{req.url}$ ; EXECUTING=$#{req.params}$ ; REQ.BODY=$#{req.body}$")
 end
 else
 connection.send(verb, path, params)
