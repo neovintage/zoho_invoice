@@ -130,7 +130,7 @@ puts("EXCEPTION=$#{e}$")
     #
     def to_hash(*args)
       #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
-      Hash.from_xml(build_hash(ZohoInvoice::Invoice::ATTRIBUTES_ALLOWED_FOR_UPDATE).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
