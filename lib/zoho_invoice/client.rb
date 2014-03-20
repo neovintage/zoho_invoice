@@ -35,7 +35,8 @@ module ZohoInvoice
     def request(verb, path, params={})
 inv_json = nil
 if params[:JSONString]
-inv_json = {"total"=>"0.0", "invoice_number"=>"INV-0010547", "balance"=>"0.0", "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>'480266000000071001', "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}.to_json
+#inv_json = {"total"=>"0.0", "invoice_number"=>"INV-0010547", "balance"=>"0.0", "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>'480266000000071001', "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}.to_json
+inv_json = {"total"=>"0.0", "balance"=>"0.0", "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>'480266000000071001', "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}.to_json
 puts("VERB=$#{verb}$ ; PARAMS_FOR_CONNECTION=$#{params}$")
 puts("VERB=$#{verb}$ ; JSON=$#{inv_json}$")
 end
