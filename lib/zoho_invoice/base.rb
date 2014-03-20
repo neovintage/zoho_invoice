@@ -194,7 +194,7 @@ puts("EXCEPTION=$#{e}$")
     def build_hash(attrs)
       Nokogiri::XML::Builder.new do |xml|
         xml.send("#{self.class.to_s.split('::').last}") {
-puts("ATTRIBUTES=$#{self.attrs}$")
+puts("ATTRIBUTES=$#{attrs}$")
           attrs.each do |attr|
             vals = self.send(attr)
             if !vals.nil? && !vals.is_a?(Array)
