@@ -207,8 +207,10 @@ puts("ATTRIBUTES=$#{attrs}$")
           end
 puts("REFLECTIONS=$#{self.reflections}$")
           (self.reflections.each do |refl|
-puts("REFLECTION=$#{refl}$ ; EMPTY=$#{refl.empty?} ; BLANK?=$#{refl.blank?}$")
+puts("REFLECTION_NAME=$#{refl}$ ; EMPTY=$#{refl.empty?} ; BLANK?=$#{refl.blank?}$")
             if !refl.empty?
+refl_val = self.send(refl)
+puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?} ; BLANK?=$#{refl_val.blank?}$")
               xml.send(refl.to_s) {
                 self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
               }
