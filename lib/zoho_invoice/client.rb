@@ -33,7 +33,13 @@ module ZohoInvoice
     end
 
     def request(verb, path, params={})
+test_json = {"notes":"Thanks for your business.","customer_id":"480266000000071001","terms":"Alex Test 7"}.to_json
+puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
+if(:put == verb)
+connection.send(verb, path, credentials.merge({:JSONString => test_json}))
+else
       connection.send(verb, path, params)
+end
     end
 
     private
