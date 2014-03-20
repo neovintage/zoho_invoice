@@ -244,6 +244,7 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
           h[refl] = refl_a
         end
       end
+puts("INTERMEDIATE_HASH=$#{h}$")
       g = {}
       g[self.class.to_s.split('::').last] = h
       g
