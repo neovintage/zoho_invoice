@@ -121,7 +121,7 @@ module ZohoInvoice
       :unit
     ]
 
-    define_object_attrs(READ_ATTRIBUTES)
+    define_object_attrs(*READ_ATTRIBUTES)
 
     has_many :invoice_items
 

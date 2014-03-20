@@ -10,6 +10,7 @@ module ZohoInvoice
 
     def self.define_object_attrs(*attrs)
       @attributes = attrs
+puts("DEFINED_OBJECT_ATTRIBUTES=$#{@attributes}$ ; TYPE=$#{@attributes.class.to_s}$")
       create_attributes(attrs)
     end
 
