@@ -113,7 +113,7 @@ module ZohoInvoice
       :quantity,
       :rate,
       :recurring_invoice_id,
-      #:salesperson_name,
+      :salesperson_name,
       :shipping_charge,
       :tax_id,
       :template_id,
