@@ -243,9 +243,10 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
             h[refl] = refl_a
           end
         end
-        g = {}
-        g[self.class.to_s.split('::').last] = h
-        g
+      end
+      g = {}
+      g[self.class.to_s.split('::').last] = h
+      g
     end
 
     private
