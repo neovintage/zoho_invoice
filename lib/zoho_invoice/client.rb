@@ -38,24 +38,10 @@ if params[:JSONString]
 #inv_json = {"total"=>"0.0", "invoice_number"=>"INV-0010547", "balance"=>"0.0", "status"=>"paid", "notes"=>"Thanks for your business.", "customer_id"=>"480266000000071001", "terms"=>"Alex Test 4", "customer_name"=>"Alex Sherstinsky Test", "currency_code"=>"USD"}.to_json
 #inv_json = "{\"customer_id\":\"480266000000071001\", \"notes\":\"Alex Test 3\"}"
 #inv_json = {"notes"=>"Thanks for your business.", "customer_id"=>"480266000000071001", "terms"=>"Alex Test 4"}.to_json
-inv_json = {"notes"=>"Thanks for your business.", "customer_id"=>"480266000000071001", "terms"=>"Alex Test 1"}.to_json
+inv_json = {"notes"=>"Thanks for your business.", "customer_id"=>"480266000000071001", "terms"=>"Alex Test 3"}.to_json
 puts("VERB=$#{verb}$ ; PARAMS_FOR_CONNECTION=$#{params}$")
 puts("VERB=$#{verb}$ ; JSON=$#{inv_json}$")
-end
-
-if(:put == verb)
-conn = connection
-if(true)
-conn.send(verb, path, credentials.merge({:JSONString => inv_json}))
-else
-conn.put do |req|
-req.url(path)
-req.params = req.params.merge(credentials)
-req.body = "JSONString=#{inv_json}"
-#req.body = "JSONString={\"customer_id\":\"480266000000071001\", \"notes\":\"Alex Test 3\"}"
-puts("VERB=$#{verb}$ ; PATH=$#{path}$ ; EXECUTING=$#{req.params}$ ; REQ.BODY=$#{req.body}$")
-end
-end
+connection.send(verb, path, credentials.merge({:JSONString => inv_json}))
 else
 connection.send(verb, path, params)
 end
