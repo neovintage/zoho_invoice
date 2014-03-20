@@ -47,6 +47,7 @@ if(:put == verb)
 conn = connection
 if(true)
 conn.send(verb, {:url => path, :params => credentials, :body => "JSONString=#{inv_json}"})
+conn.send(verb, path, credentials.merge({'JSONString' => inv_json}))
 else
 conn.put do |req|
 req.url(path)
