@@ -69,11 +69,11 @@ module ZohoInvoice
       :unit
     ]
     ATTRIBUTES_ALLOWED_FOR_UPDATE = [
-      :additional_field1,
+      #:additional_field1,
       #:adjustment,
       #:adjustment_description,
       #:allow_partial_payments,
-      :contact_persons,
+      #:contact_persons,
       :custom_fields,
       :customer_id,
       #:date,
@@ -96,7 +96,7 @@ module ZohoInvoice
       #:payment_terms_label,
       #:quantity,
       #:rate,
-      :salesperson_name,
+      #:salesperson_name,
       #:shipping_charge,
       #:tax_id,
       #:template_id,
