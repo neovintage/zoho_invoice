@@ -130,7 +130,7 @@ puts("EXCEPTION=$#{e}$")
     #
     def to_hash(*args)
       #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
-      Hash.from_xml(build_hash.to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_hash(ZohoInvoice::ATTRIBUTES_ALLOWED_FOR_UPDATE).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -191,24 +191,24 @@ puts("EXCEPTION=$#{e}$")
       end
     end
 
-    def build_hash
+    def build_hash(attrs)
       Nokogiri::XML::Builder.new do |xml|
         xml.send("#{self.class.to_s.split('::').last}") {
-puts("ATTRIBUTES=$#{self.attributes}$")
-          self.attributes.each do |attr|
+puts("ATTRIBUTES=$#{self.attrs}$")
+          attrs.each do |attr|
             vals = self.send(attr)
             if !vals.nil? && !vals.is_a?(Array)
               xml.send("#{attr.to_s}_", self.send(attr))
             end
           end
 puts("REFLECTIONS=$#{self.reflections}$")
-          self.reflections.each do |refl|
-            if !refl.empty?
-              xml.send(refl.to_s) {
-                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
-              }
-            end
-          end
+#          self.reflections.each do |refl|
+#            if !refl.empty?
+#              xml.send(refl.to_s) {
+#                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
+#              }
+#            end
+#          end
         }
       end
     end
