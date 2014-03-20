@@ -258,8 +258,7 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
       if(obj.is_a?(Array))
         res = []
         obj.each {|elt| res << stringify_object_values(elt)}
-      elsif
-      if(obj.is_a?(Hash))
+      elsif(obj.is_a?(Hash))
         res = {}
         obj.each {|key, elt| res[key] = stringify_object_values(elt)}
       end
