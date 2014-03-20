@@ -230,8 +230,8 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
 puts("ATTRIBUTES=$#{attrs}$")
       attrs.each do |attr|
         vals = self.send(attr)
-        #if !vals.nil?
-        if !vals.nil? && !vals.is_a?(Array)
+        if !vals.nil?
+        #if !vals.nil? && !vals.is_a?(Array)
           h["#{attr.to_s}"] = vals
         end
       end
