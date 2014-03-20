@@ -233,15 +233,15 @@ puts("ATTRIBUTES=$#{attrs}$")
         if !vals.nil?
           h["#{attr.to_s}"] = vals
         end
+      end
 puts("REFLECTIONS=$#{self.reflections}$")
-        self.reflections.each do |refl|
-          refl_val = self.send(refl)
+      self.reflections.each do |refl|
+        refl_val = self.send(refl)
 puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{refl_val.blank?}$")
-          if !refl_val.empty?
-            refl_a = []
-            refl_val.each {|r| refl_h << r}
-            h[refl] = refl_a
-          end
+        if !refl_val.empty?
+          refl_a = []
+          refl_val.each {|r| refl_h << r}
+          h[refl] = refl_a
         end
       end
       g = {}
