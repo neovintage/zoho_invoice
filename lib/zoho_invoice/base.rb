@@ -134,8 +134,7 @@ h.to_json
     #
     def to_hash(*args)
       #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
-      #Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
-Hash.from_xml(build_hash(ZohoInvoice::Invoice::READ_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -207,13 +206,13 @@ puts("ATTRIBUTES=$#{attrs}$")
             end
           end
 puts("REFLECTIONS=$#{self.reflections}$")
-#          self.reflections.each do |refl|
-#            if !refl.empty?
-#              xml.send(refl.to_s) {
-#                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
-#              }
-#            end
-#          end
+          self.reflections.each do |refl|
+            if !refl.empty?
+              xml.send(refl.to_s) {
+                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
+              }
+            end
+          end
         }
       end
     end
