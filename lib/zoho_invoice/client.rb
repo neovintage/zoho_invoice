@@ -41,7 +41,8 @@ puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
 actual_json = params.to_json
 puts("VERB=$#{verb}$ ; PARAMS_FOR_CONNECTION=$#{params}$")
 puts("VERB=$#{verb}$ ; ACTUAL_JSON=$#{actual_json}$")
-connection.send(verb, path, credentials.merge({:JSONString => actual_json}))
+#connection.send(verb, path, credentials.merge({:JSONString => actual_json}))
+connection.send(verb, path, params)
 else
 connection.send(verb, path, params)
 end
