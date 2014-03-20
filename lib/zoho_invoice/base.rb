@@ -134,7 +134,8 @@ h.to_json
     #
     def to_hash(*args)
       #Hash.from_xml(build_attributes.to_xml(*args))["#{self.class.to_s.split('::').last}"]
-      Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+      #Hash.from_xml(build_hash(ZohoInvoice::Invoice::UPDATE_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
+Hash.from_xml(build_hash(ZohoInvoice::Invoice::READ_ATTRIBUTES).to_xml(*args))["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -195,18 +196,19 @@ h.to_json
       end
     end
 
-    def build_hash(attrs, include_reflections = true)
+    def build_hash(attrs)
       Nokogiri::XML::Builder.new do |xml|
         xml.send("#{self.class.to_s.split('::').last}") {
 puts("ATTRIBUTES=$#{attrs}$")
           attrs.each do |attr|
             vals = self.send(attr)
+            #<AlexSherstinsky>Since the response data in V3 API version is JSON, it is acceptable (and desirable) to allow Array field values.</AlexSherstinsky>
             if !vals.nil? && !vals.is_a?(Array)
               xml.send("#{attr.to_s}_", self.send(attr))
             end
           end
 puts("REFLECTIONS=$#{self.reflections}$")
-          (self.reflections.each do |refl|
+          self.reflections.each do |refl|
 puts("REFLECTION_NAME=$#{refl}$ ; EMPTY=$#{refl.empty?}$ ; BLANK?=$#{refl.blank?}$")
             if !refl.empty?
 refl_val = self.send(refl)
@@ -217,7 +219,7 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
                 }
               end
             end
-          end) if(include_reflections)
+          end
         }
       end
     end
