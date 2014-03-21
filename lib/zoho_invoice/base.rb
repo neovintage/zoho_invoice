@@ -29,7 +29,7 @@ module ZohoInvoice
 
       # Assign all of the single attribtues
       #
-      if !self.attributes.empty?
+      if !self.attributes.blank?
         (self.attributes & options.keys).each do |attribute|
           self.send("#{attribute}=", options[attribute])
         end
@@ -115,7 +115,7 @@ module ZohoInvoice
       h = {}
       attrs.each do |attr|
         vals = self.send(attr)
-        if !vals.nil?
+        if !vals.blank?
           vals = stringify_object_values(vals)
           h["#{attr.to_s}"] = vals
         end
@@ -138,10 +138,10 @@ module ZohoInvoice
       res = nil
       if(obj.is_a?(Array))
         res = []
-        obj.each {|elt| res << stringify_object_values(elt) unless(elt.nil?)}
+        obj.each {|elt| res << stringify_object_values(elt) unless(elt.blank?)}
       elsif(obj.is_a?(Hash))
         res = {}
-        obj.each {|key, elt| res[key] = stringify_object_values(elt) unless(elt.nil?)}
+        obj.each {|key, elt| res[key] = stringify_object_values(elt) unless(elt.blank?)}
       end
       res
     end
