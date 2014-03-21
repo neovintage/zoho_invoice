@@ -123,7 +123,7 @@ module ZohoInvoice
     UPDATE_ATTRIBUTES = CREATE_ATTRIBUTES - [
       :invoice_id,
       #:created_time,
-      #:exchange_rate,
+      :exchange_rate,
       #:last_modified_time,
       #:l_f_name,
       #:last_sync_time,
