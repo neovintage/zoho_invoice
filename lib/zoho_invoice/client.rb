@@ -29,7 +29,6 @@ module ZohoInvoice
     end
 
     def put(path, params={})
-puts("PARAMS=$#{credentials.merge(params)}$")
       request(:put, path, credentials.merge(params))
     end
 

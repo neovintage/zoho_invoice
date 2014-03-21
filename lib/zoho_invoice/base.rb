@@ -75,7 +75,6 @@ module ZohoInvoice
       end
       self
     rescue Faraday::Error::ClientError => e
-puts("EXCEPTION=$#{e}$")
       if e.response && e.response[:body]
         raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
@@ -139,7 +138,7 @@ puts("EXCEPTION=$#{e}$")
       res = nil
       if(obj.is_a?(Array))
         res = []
-        obj.each {|elt| res << stringify_object_values(elt)}
+        obj.each {|elt| res << stringify_object_values(elt) unless(elt.blank?)}
       elsif(obj.is_a?(Hash))
         res = {}
         obj.each {|key, elt| res[key] = stringify_object_values(elt) unless(elt.blank?)}
