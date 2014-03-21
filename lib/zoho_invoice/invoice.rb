@@ -149,11 +149,13 @@ module ZohoInvoice
       #:currency_code,
       #
       #:additional_field1,
-      :adjustment,
-      :adjustment_description,
-      :allow_partial_payments,
-      :contact_persons,
-      :date,
+      #
+      #:adjustment,
+      #:adjustment_description,
+      #:allow_partial_payments,
+      #:contact_persons,
+      #:date,
+      #
       #:description,
       :discount,
       :discount_type,
