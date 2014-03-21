@@ -154,7 +154,7 @@ module ZohoInvoice
       :adjustment_description,
       #:allow_partial_payments,
       #:contact_persons,
-      :date,
+      #:date,
       #
       #:description,
       :discount,
