@@ -70,7 +70,7 @@ module ZohoInvoice
       else
         result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
       end
-      if invoice_id.blank? && !result.body.nil? && !result.body[klass_name].nil?
+      if invoice_id.blank? && !result.body.blank? && !result.body[klass_name].blank?
         self.send("#{klass_name.downcase}_id=", result.body[klass_name.downcase]["#{klass_name.downcase}_id"])
       end
       self
@@ -116,7 +116,7 @@ puts("EXCEPTION=$#{e}$")
       h = {}
       attrs.each do |attr|
         vals = self.send(attr)
-        if !vals.nil?
+        if !vals.blank?
           vals = stringify_object_values(vals)
           h["#{attr.to_s}"] = vals
         end
@@ -188,7 +188,7 @@ puts("EXCEPTION=$#{e}$")
     end
 
     def self.process_objects(client, objects_to_hydrate)
-      if objects_to_hydrate.nil?
+      if objects_to_hydrate.blank?
         return []
       else
         if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
