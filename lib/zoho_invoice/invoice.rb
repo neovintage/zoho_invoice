@@ -143,7 +143,7 @@ module ZohoInvoice
       :customer_name,
       #:custom_fields,
       #
-      #:invoice_date,
+      :invoice_date,
       #:payments_due,
       #:due_date,
       #:currency_code,
