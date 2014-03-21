@@ -115,6 +115,7 @@ module ZohoInvoice
       h = {}
       attrs.each do |attr|
         vals = self.send(attr)
+puts("VALS=$#{vals.to_s}$ ; TYPE=$#{vals.class.to_s}$ ; BLANK?=$#{vals.blank?}$ ; NIL?=$#{vals.nil?}$")
         h["#{attr.to_s}"] = stringify_object_values(vals) if(((vals.is_a?(Array) || vals.is_a?(Hash) || vals.is_a?(String)) && !vals.blank?) || !vals.nil?)
       end
       self.reflections.each do |refl|
@@ -132,7 +133,7 @@ module ZohoInvoice
 
     def stringify_object_values(obj)
 raise("CATASTROPHY") if obj.nil?
-puts("OBJ=$#{obj.to_s}$ ; TYPE=$#{obj.class.to_s}$")
+puts("OBJ=$#{obj.to_s}$ ; TYPE=$#{obj.class.to_s}$ ; BLANK?=$#{obj.blank?}$ ; NIL?=$#{obj.nil?}$")
       return(obj.to_s.gsub(/[()\\"'\?\/]/, ' ').squeeze(' ').strip) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       res = nil
       if(obj.is_a?(Array))
