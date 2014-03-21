@@ -150,10 +150,10 @@ module ZohoInvoice
       #
       #:additional_field1,
       #
-      #:adjustment,
+      :adjustment,
       #:adjustment_description,
       #:allow_partial_payments,
-      :contact_persons,
+      #:contact_persons,
       #:date,
       #
       #:description,
