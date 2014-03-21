@@ -36,7 +36,7 @@ module ZohoInvoice
 if(:put == verb)
 #test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7"}.to_json
 #test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal? (yes/no)"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed? (FOR ALEX ONLY)"}]}.to_json
-test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal (yes/no)"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed (FOR ALEX ONLY)"}]}.to_json
+test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal yes or no)"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed FOR ALEX ONLY"}]}.to_json
 puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
 #test_json = CGI.escape(test_json)
 #puts("VERB=$#{verb}$ ; TEST_JSON_ESCAPED=$#{test_json}$")
