@@ -160,7 +160,7 @@ module ZohoInvoice
       #
       :discount,
       #:discount_type,
-      :expense_id,
+      #:expense_id,
       :gateway_name,
       :invoiced_estimate_id,
       :is_discount_before_tax,
