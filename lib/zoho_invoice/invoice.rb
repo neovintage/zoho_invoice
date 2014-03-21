@@ -145,7 +145,7 @@ module ZohoInvoice
       #
       #:invoice_date,
       #:payments_due,
-      :due_date,
+      #:due_date,
       #:currency_code,
       #
       #:additional_field1,
@@ -154,7 +154,7 @@ module ZohoInvoice
       #:adjustment_description,
       #:allow_partial_payments,
       #:contact_persons,
-      :date,
+      #:date,
       #
       #:description,
       #
@@ -165,7 +165,7 @@ module ZohoInvoice
       #:invoiced_estimate_id,
       #:is_discount_before_tax,
       #:item_id,
-      #:line_items,
+      :line_items,
       #
       #:name,
       #
