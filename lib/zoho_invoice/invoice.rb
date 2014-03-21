@@ -176,13 +176,14 @@ module ZohoInvoice
       #:project_id,
       #:quantity,
       #:rate,
-      :recurring_invoice_id,
-      :salesperson_name,
-      :shipping_charge,
-      :tax_id,
-      :template_id,
-      :time_entry_ids,
-      :unit
+      #
+      #:recurring_invoice_id,
+      #:salesperson_name,
+      #:shipping_charge,
+      #:tax_id,
+      #:template_id,
+      #:time_entry_ids,
+      #:unit
     ]
 
     define_object_attrs(*READ_ATTRIBUTES)
