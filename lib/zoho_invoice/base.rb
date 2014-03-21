@@ -115,16 +115,16 @@ module ZohoInvoice
       h = {}
       attrs.each do |attr|
         vals = self.send(attr)
-        h["#{attr.to_s}"] = stringify_object_values(vals) if(((vals.is_a?(Array) || vals.is_a?(Hash)) && !vals.blank?) || !vals.nil?)
+        h["#{attr.to_s}"] = stringify_object_values(vals) if(((vals.is_a?(Array) || vals.is_a?(Hash) || vals.is_a?(String)) && !vals.blank?) || !vals.nil?)
       end
-#      self.reflections.each do |refl|
-#        refl_val = self.send(refl)
-#        if !refl_val.blank?
-#          refl_a = []
-#          refl_val.each {|r| refl_h << r}
-#          h[refl] = refl_a
-#        end
-#      end
+      self.reflections.each do |refl|
+        refl_val = self.send(refl)
+        if !refl_val.blank?
+          refl_a = []
+          refl_val.each {|r| refl_h << r}
+          h[refl] = refl_a
+        end
+      end
       g = {}
       g[self.class.to_s.split('::').last] = h
       g
@@ -137,10 +137,10 @@ puts("OBJ=$#{obj.to_s}$ ; TYPE=$#{obj.class.to_s}$")
       res = nil
       if(obj.is_a?(Array))
         res = []
-        obj.each {|elt| res << stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash)) && !elt.blank?) || !elt.nil?)}
+        obj.each {|elt| res << stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}
       elsif(obj.is_a?(Hash))
         res = {}
-        obj.each {|key, elt| res[key] = stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash)) && !elt.blank?) || !elt.nil?)}
+        obj.each {|key, elt| res[key] = stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}
       end
       res
     end
