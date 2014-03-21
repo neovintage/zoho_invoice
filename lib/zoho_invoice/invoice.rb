@@ -131,9 +131,9 @@ module ZohoInvoice
       #:source,
       #:total,
       #
-      :reference_id,
+      #:reference_id,
       #:invoice_item_total,
-      #:invoice_number,
+      :invoice_number,
       #:tax_total,
       #:p_o_number,
       #:balance,
