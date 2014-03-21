@@ -165,7 +165,7 @@ module ZohoInvoice
       #:invoiced_estimate_id,
       #:is_discount_before_tax,
       #:item_id,
-      :line_items,
+      #:line_items,
       #
       #:name,
       #
