@@ -33,19 +33,7 @@ module ZohoInvoice
     end
 
     def request(verb, path, params={})
-#if(:put == verb)
-#test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7"}.to_json
-#test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal? (yes/no)"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed? (FOR ALEX ONLY)"}]}.to_json
-#test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal yes or no"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed for Alex"}]}.to_json
-#test_json = {"notes"=>"Thanks for your busines", "customer_id"=>"4802607101", "terms"=>"Alex Test 7", "custom_fields"=>[{"index"=>"1", "show_on_pdf"=>"false", "value"=>"52605", "label"=>"Customer ID"}, {"index"=>"2", "show_on_pdf"=>"false", "value"=>"no", "label"=>"Renewal yes no"}, {"index"=>"3", "show_on_pdf"=>"false", "value"=>"true", "label"=>"Procesed FOR ALEX ONLY"}]}.to_json
-#test_json = {"notes"=>"Thanks for your busines", "customer_id"=>"4802607101", "terms"=>"Alex Test 7", "custom_fields"=>[{"index"=>"1", "show_on_pdf"=>"false", "value"=>"52605", "label"=>"Customer ID"}, {"index"=>"2", "show_on_pdf"=>"false", "value"=>"no", "label"=>"Renewal yes no"}, {"index"=>"3", "show_on_pdf"=>"false", "value"=>"true", "label"=>"Procesed for Alex"}]}.to_json
-#puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
-#test_json = CGI.escape(test_json)
-#puts("VERB=$#{verb}$ ; TEST_JSON_ESCAPED=$#{test_json}$")
-#connection.send(verb, path, credentials.merge({:JSONString => test_json}))
-#else
       connection.send(verb, path, params)
-#end
     end
 
     private
@@ -53,17 +41,13 @@ module ZohoInvoice
     def connection
       @connection ||= Faraday.new(@client_options) do |c|
         c.use       Faraday::Response::RaiseError
-
         c.request :multipart
         c.request :url_encoded
-
-        #<AlexSherstinsky>The V3 Zoho API version returns data in the JSON format.</AlexSherstinsky>
-        #c.response  :xml, :content_type => /\bxml$/
         c.response  :json, :content_type => /\bjson$/
-
         c.adapter Faraday.default_adapter
       end
     end
 
   end
+
 end
