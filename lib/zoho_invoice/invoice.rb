@@ -62,6 +62,7 @@ module ZohoInvoice
     ]
 
     CREATE_ATTRIBUTES = READ_ATTRIBUTES
+    CREATE_UPDATE_ATTRIBUTES = READ_ATTRIBUTES - [:invoice_id]
 
     UPDATE_ATTRIBUTES_SAVE = CREATE_ATTRIBUTES - [
       :invoice_id,
