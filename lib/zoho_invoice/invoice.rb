@@ -137,7 +137,7 @@ module ZohoInvoice
       #:tax_total,
       #:p_o_number,
       #:balance,
-      #:status,
+      :status,
       #:notes,
       #:customer_id,
       #:terms,
