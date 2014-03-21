@@ -135,7 +135,8 @@ puts("EXCEPTION=$#{e}$")
     end
 
     def stringify_object_values(obj)
-      return(obj.to_s.gsub(/\W/, ' ').squeeze(' ').strip) unless(obj.is_a?(Array) || obj.is_a?(Hash))
+      #return(obj.to_s.gsub(/\W/, ' ').squeeze(' ').strip) unless(obj.is_a?(Array) || obj.is_a?(Hash))
+      return(obj.to_s) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       res = nil
       if(obj.is_a?(Array))
         res = []
