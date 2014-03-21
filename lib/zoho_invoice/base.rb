@@ -75,6 +75,7 @@ module ZohoInvoice
       end
       self
     rescue Faraday::Error::ClientError => e
+puts("EXCEPTION=$#{e}$ ; MESSAGE=$#{e.message if e.respond_to? :message}$")
       if e.response && e.response[:body]
         raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
