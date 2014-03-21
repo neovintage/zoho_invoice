@@ -251,7 +251,7 @@ puts("REFLECTION_VALUE=$#{refl_val}$ ; EMPTY=$#{refl_val.empty?}$ ; BLANK?=$#{re
     end
 
     def stringify_object_values(obj)
-      return(obj.to_s) unless(obj.is_a?(Array) || obj.is_a?(Hash))
+      return(URI.encode(obj.to_s)) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       res = nil
       if(obj.is_a?(Array))
         res = []
