@@ -140,7 +140,7 @@ module ZohoInvoice
       #:notes,
       #:customer_id,
       #:terms,
-      :customer_name,
+      #:customer_name,
       #:custom_fields,
       #
       #:invoice_date,
@@ -150,7 +150,7 @@ module ZohoInvoice
       #
       #:additional_field1,
       #
-      :adjustment,
+      #:adjustment,
       #:adjustment_description,
       #:allow_partial_payments,
       #:contact_persons,
@@ -158,7 +158,7 @@ module ZohoInvoice
       #
       #:description,
       #
-      :discount,
+      #:discount,
       #:discount_type,
       #:expense_id,
       #:gateway_name,
