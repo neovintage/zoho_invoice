@@ -135,7 +135,6 @@ puts("EXCEPTION=$#{e}$")
     end
 
     def stringify_object_values(obj)
-      #return(obj.to_s.gsub(/\W/, ' ').squeeze(' ').strip) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       return(obj.to_s.gsub(/[()\\"'\?\/]/, ' ').squeeze(' ').strip) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       res = nil
       if(obj.is_a?(Array))
@@ -143,7 +142,7 @@ puts("EXCEPTION=$#{e}$")
         obj.each {|elt| res << stringify_object_values(elt)}
       elsif(obj.is_a?(Hash))
         res = {}
-        obj.each {|key, elt| res[key] = stringify_object_values(elt)}
+        obj.each {|key, elt| res[key] = stringify_object_values(elt) unless(elt.blank?)}
       end
       res
     end
