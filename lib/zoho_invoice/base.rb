@@ -157,9 +157,9 @@ puts("ELT=$#{elt.to_s}$ ; TYPE=$#{elt.class.to_s}$ ; BLANK?=$#{elt.blank?}$ ; NI
         obj.each do |key, elt|
 puts("ELT=$#{elt.to_s}$ ; TYPE=$#{elt.class.to_s}$ ; BLANK?=$#{elt.blank?}$ ; NIL?=$#{elt.nil?}$ ; CONDITION=$#{(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}$")
           if(elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String))
-            res << stringify_object_values(elt) unless(elt.blank?)
+            res[key] = stringify_object_values(elt) unless(elt.blank?)
           else
-            res << stringify_object_values(elt) unless(elt.nil?)
+            res[key] = stringify_object_values(elt) unless(elt.nil?)
           end
         end
       end
