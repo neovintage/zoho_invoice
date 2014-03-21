@@ -35,8 +35,10 @@ module ZohoInvoice
     def request(verb, path, params={})
 #test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7"}.to_json
 #test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal? (yes/no)"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed? (FOR ALEX ONLY)"}]}.to_json
-test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"}]}.to_json
+test_json = {"notes" => "Thanks for your business.","customer_id" => "480266000000071001","terms" => "Alex Test 7", "custom_fields" => [{"index" => "1","show_on_pdf" => "false","value" => "52605","label" => "Customer ID"},{"index" => "2","show_on_pdf" => "false","value" => "no","label" => "Renewal? (yes/no)"},{"index" => "3","show_on_pdf" => "false","value" => "true","label" => "Processed? (FOR ALEX ONLY)"}]}.to_json
 puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
+test_json = URI.encode(test_json)
+puts("VERB=$#{verb}$ ; TEST_JSON_ENCODED=$#{test_json}$")
 if(:put == verb)
 connection.send(verb, path, credentials.merge({:JSONString => test_json}))
 else
