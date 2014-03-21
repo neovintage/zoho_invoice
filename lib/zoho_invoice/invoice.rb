@@ -158,8 +158,8 @@ module ZohoInvoice
       #
       #:description,
       #
-      #:discount,
-      :discount_type,
+      :discount,
+      #:discount_type,
       :expense_id,
       :gateway_name,
       :invoiced_estimate_id,
