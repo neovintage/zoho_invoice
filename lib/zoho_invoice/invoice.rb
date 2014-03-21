@@ -124,7 +124,7 @@ module ZohoInvoice
       :invoice_id,
       #:created_time,
       #:exchange_rate,
-      #:last_modified_time,
+      :last_modified_time,
       #:l_f_name,
       :last_sync_time,
       :late_fee_amount,
