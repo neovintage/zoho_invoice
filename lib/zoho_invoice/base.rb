@@ -138,10 +138,16 @@ puts("OBJ=$#{obj.to_s}$ ; TYPE=$#{obj.class.to_s}$ ; BLANK?=$#{obj.blank?}$ ; NI
       res = nil
       if(obj.is_a?(Array))
         res = []
-        obj.each {|elt| res << stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}
+        #obj.each {|elt| res << stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}
+        obj.each do |elt|
+          res << stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)
+        end
       elsif(obj.is_a?(Hash))
         res = {}
-        obj.each {|key, elt| res[key] = stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}
+        #obj.each {|key, elt| res[key] = stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)}
+        obj.each do |key, elt|
+          res[key] = stringify_object_values(elt) if(((elt.is_a?(Array) || elt.is_a?(Hash) || elt.is_a?(String)) && !elt.blank?) || !elt.nil?)
+        end
       end
       res
     end
