@@ -121,8 +121,8 @@ module ZohoInvoice
       :unit
     ]
     UPDATE_ATTRIBUTES = CREATE_ATTRIBUTES - [
-      #:invoice_id,
-      :created_time,
+      :invoice_id,
+      #:created_time,
       :exchange_rate,
       :last_modified_time,
       :l_f_name,
@@ -132,7 +132,7 @@ module ZohoInvoice
       :total,
       :reference_id,
       :invoice_item_total,
-      #:invoice_number,
+      :invoice_number,
       :tax_total,
       :p_o_number,
       :balance,
