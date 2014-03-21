@@ -42,7 +42,7 @@ module ZohoInvoice
 #puts("VERB=$#{verb}$ ; TEST_JSON=$#{test_json}$")
 #test_json = CGI.escape(test_json)
 #puts("VERB=$#{verb}$ ; TEST_JSON_ESCAPED=$#{test_json}$")
-connection.send(verb, path, credentials.merge({:JSONString => test_json}))
+#connection.send(verb, path, credentials.merge({:JSONString => test_json}))
 #else
       connection.send(verb, path, params)
 #end
