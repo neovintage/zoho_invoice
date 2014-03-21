@@ -181,7 +181,7 @@ module ZohoInvoice
       #:salesperson_name,
       #:shipping_charge,
       #:tax_id,
-      #:template_id,
+      :template_id,
       #:time_entry_ids,
       #:unit
     ]
