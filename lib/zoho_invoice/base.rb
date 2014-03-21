@@ -115,7 +115,7 @@ module ZohoInvoice
       h = {}
       attrs.each do |attr|
         vals = self.send(attr)
-        if !vals.blank?
+        if !vals.nil?
           vals = stringify_object_values(vals)
           h["#{attr.to_s}"] = vals
         end
@@ -138,10 +138,10 @@ module ZohoInvoice
       res = nil
       if(obj.is_a?(Array))
         res = []
-        obj.each {|elt| res << stringify_object_values(elt) unless(elt.blank?)}
+        obj.each {|elt| res << stringify_object_values(elt) unless(elt.nil?)}
       elsif(obj.is_a?(Hash))
         res = {}
-        obj.each {|key, elt| res[key] = stringify_object_values(elt) unless(elt.blank?)}
+        obj.each {|key, elt| res[key] = stringify_object_values(elt) unless(elt.nil?)}
       end
       res
     end
