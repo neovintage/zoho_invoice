@@ -130,7 +130,6 @@ module ZohoInvoice
       #:late_fee_amount,
       #:source,
       #:total,
-      #
       #:reference_id,
       #:invoice_item_total,
       :invoice_number,
@@ -143,10 +142,12 @@ module ZohoInvoice
       #:terms,
       :customer_name,
       #:custom_fields,
-      :invoice_date,
-      :payments_due,
-      :due_date,
-      :currency_code,
+      #
+      #:invoice_date,
+      #:payments_due,
+      #:due_date,
+      #:currency_code,
+      #
       #:additional_field1,
       :adjustment,
       :adjustment_description,
