@@ -177,10 +177,10 @@ module ZohoInvoice
       #:quantity,
       #:rate,
       #
-      :recurring_invoice_id,
-      #:salesperson_name,
-      #:shipping_charge,
-      #:tax_id,
+      #:recurring_invoice_id,
+      :salesperson_name,
+      :shipping_charge,
+      :tax_id,
       #:template_id,
       #:time_entry_ids,
       #:unit
