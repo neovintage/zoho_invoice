@@ -144,9 +144,9 @@ module ZohoInvoice
       #:custom_fields,
       #
       #:invoice_date,
-      #:payments_due,
+      :payments_due,
       #:due_date,
-      :currency_code,
+      #:currency_code,
       #
       #:additional_field1,
       :adjustment,
