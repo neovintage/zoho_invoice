@@ -70,8 +70,12 @@ module ZohoInvoice
       else
         result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
       end
-      if invoice_id.blank? && !result.body.blank? && !result.body[klass_name].blank?
-        self.send("#{klass_name.downcase}_id=", result.body[klass_name.downcase]["#{klass_name.downcase}_id"])
+      if invoice_id.blank? && !result.env.blank? && !result.env.body.blank? && !result.env.body[klass_name.downcase].blank?
+        result.env.body[klass_name.downcase].each do |elem|
+          if self.attributes.include?(elem[0].to_sym)
+            self.send("#{elem[0].to_s}=", elem[1])
+          end
+        end
       end
       self
     rescue Faraday::Error::ClientError => e
@@ -85,7 +89,8 @@ module ZohoInvoice
     end
 
     def to_hash(*args)
-      build_attributes(ZohoInvoice::Invoice::CREATE_UPDATE_ATTRIBUTES)["#{self.class.to_s.split('::').last}"]
+
+      build_attributes("#{self.class}".constantize::CREATE_UPDATE_ATTRIBUTES)["#{self.class.to_s.split('::').last}"]
     end
 
     def self.create_attributes(attrs)
@@ -125,7 +130,7 @@ module ZohoInvoice
         refl_val = self.send(refl)
         if !refl_val.blank?
           refl_a = []
-          refl_val.each {|r| refl_h << r}
+          refl_val.each {|r| refl_a << r}
           h[refl] = refl_a
         end
       end

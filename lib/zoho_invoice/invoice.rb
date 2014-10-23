@@ -1,4 +1,4 @@
-require 'zoho_invoice/invoice_item'
+require 'zoho_invoice/line_item'
 
 module ZohoInvoice
   class Invoice < Base
@@ -65,7 +65,7 @@ module ZohoInvoice
 
     define_object_attrs(*READ_ATTRIBUTES)
 
-    has_many :invoice_items
+    has_many :line_items
 
     def self.find_by_customer_id(client, id, options = {})
       retrieve(client, "/api/v3/invoices/customer/#{id}", false)
