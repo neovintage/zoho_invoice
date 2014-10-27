@@ -39,9 +39,10 @@ module ZohoInvoice
 
     def credentials
       {
-        :authtoken => @authtoken,
-        :scope     => @scope,
-        :apikey    => @apikey
+        :authtoken       => @authtoken,
+        :scope           => @scope,
+        :apikey          => @apikey,
+        :organization_id => @organization_id
       }
     end
 

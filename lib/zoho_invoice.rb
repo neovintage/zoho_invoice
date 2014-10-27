@@ -1,3 +1,4 @@
+require 'active_support/core_ext/object'
 require 'faraday'
 require 'faraday_middleware'
 require 'nokogiri'
@@ -15,6 +16,7 @@ require 'zoho_invoice/client'
 require 'zoho_invoice/version'
 require 'zoho_invoice/base'
 require 'zoho_invoice/customer'
+require 'zoho_invoice/organization'
 require 'zoho_invoice/line_item'
 require 'zoho_invoice/invoice'
 

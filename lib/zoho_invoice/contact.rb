@@ -27,7 +27,7 @@ module ZohoInvoice
       raise ZohoInvoice::ActionNotSupportedError
     end
 
-    def self.all(client)
+    def self.all(client) 
       retrieve(client, '/api/v3/contacts')
     end
 
