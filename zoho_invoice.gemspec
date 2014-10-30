@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "faraday_middleware"
   gem.add_runtime_dependency "nokogiri"
   gem.add_runtime_dependency "multi_xml"
-  gem.add_runtime_dependency "active_support"
+  gem.add_runtime_dependency "activesupport"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
