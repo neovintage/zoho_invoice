@@ -19,14 +19,6 @@ module ZohoInvoice
 
     define_object_attrs(*READ_ATTRIBUTES)
 
-    def self.create(client, options = {})
-      raise ZohoInvoice::ActionNotSupportedError
-    end
-
-    def save
-      raise ZohoInvoice::ActionNotSupportedError
-    end
-
     def self.all(client)
       retrieve(client, '/api/v3/contacts')
     end
