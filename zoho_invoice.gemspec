@@ -16,11 +16,13 @@ Gem::Specification.new do |gem|
   gem.required_rubygems_version = ">= 1.3.6"
 
   gem.add_development_dependency 'bundler', '~> 1.0'
+  gem.add_development_dependency 'awesome_print'
 
   gem.add_runtime_dependency "faraday", ">= 0.8.0"
   gem.add_runtime_dependency "faraday_middleware"
   gem.add_runtime_dependency "nokogiri"
   gem.add_runtime_dependency "multi_xml"
+  gem.add_runtime_dependency "activesupport"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

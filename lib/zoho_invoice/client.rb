@@ -6,7 +6,8 @@ module ZohoInvoice
 
     RESOURCES = [
       :customers,
-      :invoices
+      :invoices,
+      :organizations
     ]
 
     RESOURCES.each do |resource|
@@ -17,7 +18,16 @@ module ZohoInvoice
       ZohoInvoice::Configurable.keys.each do |key|
         instance_variable_set(:"@#{key}", options[key] || ZohoInvoice.instance_variable_get(:"@#{key}"))
       end
-      @client_options = ZohoInvoice.instance_variable_get(:'@client_options').merge(options[:client_options] || {})
+      @client_options  = ZohoInvoice.instance_variable_get(:'@client_options').merge(options[:client_options] || {})
+      @organization_id = @client_options.delete(:organization_id)
+    end
+
+    def organization=(org)
+      @organization_id = if org.class == Organization
+        org.organization_id
+      else
+        org.to_s
+      end
     end
 
     def get(path, params={})

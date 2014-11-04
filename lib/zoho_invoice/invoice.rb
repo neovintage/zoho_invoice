@@ -1,5 +1,3 @@
-require 'zoho_invoice/line_item'
-
 module ZohoInvoice
   class Invoice < Base
 

@@ -89,8 +89,7 @@ module ZohoInvoice
     end
 
     def to_hash(*args)
-
-      build_attributes("#{self.class}".constantize::CREATE_UPDATE_ATTRIBUTES)["#{self.class.to_s.split('::').last}"]
+      build_attributes("#{self.class}".constantize::CREATE_UPDATE_ATTRIBUTES)["#{self.class.to_s.split('::').last}"].deep_symbolize_keys
     end
 
     def self.create_attributes(attrs)
