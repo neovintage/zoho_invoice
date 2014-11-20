@@ -139,6 +139,7 @@ module ZohoInvoice
     end
 
     def stringify_object_values(obj)
+      return obj if obj.is_a?(String)
       return(obj.to_s.gsub(/[`~!@#$%^&*()+=\\|\[{\]}'";:\/?><]/, ' ').squeeze(' ').strip) unless(obj.is_a?(Array) || obj.is_a?(Hash))
       res = nil
       if(obj.is_a?(Array))
