@@ -1,6 +1,6 @@
 module ZohoInvoice
   module AuthToken
-    class AuthTokenResult < Struct.new(:authtoken, :cause)
+    AuthTokenResult = Struct.new(:authtoken, :cause) do
       def success?
         return true if !authtoken.nil?
         false

@@ -76,7 +76,6 @@ module ZohoInvoice
     # TODO Determining the resource to use will need to change
     #
     def save
-
       klass_name = self.class.to_s.split('::').last
 
       action = 'create'
@@ -93,12 +92,6 @@ module ZohoInvoice
       if e.response[:body]
         raise ZohoInvoice::Error::ClientError.from_response(e.response)
       end
-    end
-
-    # This needs to be a Nokogiri::XML::Builder
-    #
-    def to_xml(*args)
-      build_attributes.to_xml(*args)
     end
 
     def self.create_attributes(attrs)
@@ -122,80 +115,6 @@ module ZohoInvoice
 
     def camel_case(str)
       self.class.camel_case(str)
-    end
-
-    def build_attributes
-      Nokogiri::XML::Builder.new do |xml|
-        xml.send("#{self.class.to_s.split('::').last}") {
-          self.attributes.each do |attr|
-            vals = self.send(attr)
-            if !vals.nil? && !vals.is_a?(Array)
-              xml.send("#{camel_case(attr.to_s)}_", self.send(attr))
-            end
-          end
-          self.reflections.each do |refl|
-            if !refl.empty?
-              xml.send(camel_case(refl.to_s)) {
-                self.send(refl).each { |x| xml << x.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION) }
-              }
-            end
-          end
-        }
-      end
-    end
-
-    private
-
-    def self.retrieve(client, url)
-      klass = self.to_s.split('::').last
-      page = 1
-      query = {}
-      objects_to_hydrate = []
-
-      begin
-        result_hash = client.get(url, query).body
-        potential_objects = result_hash['Response'][klass + 's']
-
-        if potential_objects
-          potential_objects = potential_objects[klass]
-          if potential_objects.is_a? Hash
-            potential_objects = [potential_objects]
-          end
-          objects_to_hydrate += potential_objects
-        end
-
-        page_context = result_hash['Response']['PageContext']
-        if page_context
-          num_pages = page_context['Total_Pages'].to_i
-          page += 1
-          query = { :page => page }
-        else
-          num_pages = nil
-        end
-      end while num_pages && page <= num_pages
-
-      self.process_objects(client, objects_to_hydrate)
-    rescue Faraday::Error::ClientError => e
-      if e.response[:body]
-        raise ZohoInvoice::Error::ClientError.from_response(e.response)
-      end
-    end
-
-    def self.process_objects(client, objects_to_hydrate)
-      if objects_to_hydrate.nil?
-        return []
-      else
-        if objects_to_hydrate.is_a?(Hash) #Convert hash to array if only a single object is returned
-          objects_to_hydrate = [objects_to_hydrate]
-        end
-        objects_to_hydrate.map do |result|
-          new_hash = {}
-          result.each do |key, value|
-            new_hash[key.to_underscore.to_sym] = value if !value.is_a?(Hash) && !value.is_a?(Array)
-          end
-          self.new(client, new_hash)
-        end
-      end
     end
 
   end

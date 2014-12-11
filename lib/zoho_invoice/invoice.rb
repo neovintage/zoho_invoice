@@ -3,6 +3,8 @@ require 'zoho_invoice/invoice_item'
 module ZohoInvoice
   class Invoice < Base
 
+    class InvalidState < StandardError; end
+
     define_object_attrs :invoice_id,
       :created_time,          :exchange_rate,
       :last_modified_time,    :l_f_name,
@@ -47,6 +49,22 @@ module ZohoInvoice
 
     def self.all(client)
       retrieve(client, '/api/invoices')
+    end
+
+    def self.mark(client, state, invoice_id)
+      if !['sent', 'void', 'draft'].include?(state)
+        raise InvalidState.new("#{state} is an invalid invoice state")
+      end
+      retrieve(client, "/invoices/#{invoice_id}/status/#{state}")
+    end
+
+    def sent!
+    end
+
+    def void!
+    end
+
+    def draft!
     end
 
   end
