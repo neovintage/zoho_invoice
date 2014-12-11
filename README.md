@@ -7,6 +7,10 @@ Need to interact with the Zoho Invoice API?  The zoho_invoice gem has your back.
 
 Until the gem reaches 1.0, the interface for interacting with the gem could change.  On top of that the gem does not support the entire API just yet.  Just the minimum number of domain objects to actually create customers and invoices.  This will change over time.
 
+## Status
+
+This README covers Zoho's old Invoice API v2. Work has started on integrating version three of the API and that can be found on the version_three branch.
+
 ## Installation
 
 Add this line to your application's Gemfile:
