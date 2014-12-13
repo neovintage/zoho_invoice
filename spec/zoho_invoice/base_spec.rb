@@ -117,38 +117,38 @@ describe ZohoInvoice::Base do
       it "calls the create path if its a new record" do
         @test_obj.something_id = nil
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-        stub_post('/api/somethings/create').
+        stub_post('/api/v3/somethings/create').
           with(:body => body_params).
           to_return(:status => 200, :body => fixture('successful_something_response'), :headers => {:content_type => 'application/xml'})
         @test_obj.save
-        expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
+        expect(a_post('/api/v3/somethings/create').with(:body => body_params)).to have_been_made
       end
 
       it "calls the update path if its a dirty record" do
         @test_obj.something_id = '123456'
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-        stub_post('/api/somethings/update').
+        stub_post('/api/v3/somethings/update').
           with(:body => body_params).
           to_return(:status => 200, :body => fixture('successful_something_response'), :headers => {:content_type => 'application/xml'})
         @test_obj.save
-        expect(a_post('/api/somethings/update').with(:body => body_params)).to have_been_made
+        expect(a_post('/api/v3/somethings/update').with(:body => body_params)).to have_been_made
       end
 
       it "can happen via .create" do
         @test_obj.blah = '1234'
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-        stub_post('/api/somethings/create').
+        stub_post('/api/v3/somethings/create').
           with(:body => body_params).
           to_return(:status => 200, :body => fixture('successful_something_response'), :headers => { :content_type => 'application/xml' })
         test_obj = Something.create(@client, :blah => '1234')
-        expect(a_post('/api/somethings/create').with(:body => body_params)).to have_been_made
+        expect(a_post('/api/v3/somethings/create').with(:body => body_params)).to have_been_made
         expect(test_obj.something_id).to eq('1')
       end
 
       it "returns the object and has an error method" do
         @test_obj.blah = '1234'
         body_params = default_credentials.merge(:XMLString => @test_obj.to_xml)
-        stub_post('/api/somethings/create').with(:body => body_params).to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => { :content_type => 'application/xml' })
+        stub_post('/api/v3/somethings/create').with(:body => body_params).to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => { :content_type => 'application/xml' })
         expect { Something.create(@client, :blah => '1234') }.to raise_error { |e|
           error_expectations(e, 'Invalid value passed for XMLString', '2', '0', 500)
         }
@@ -160,11 +160,11 @@ describe ZohoInvoice::Base do
 
       it "returns an array if it finds a single record" do
         body_params = default_credentials.merge(:searchtext => '1234')
-        stub_get('/api/view/search/somethings').
+        stub_get('/api/v3/view/search/somethings').
           with(:query => body_params).
           to_return(:status => 200, :body => fixture('successful_single_record_response'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
-        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(a_get('/api/v3/view/search/somethings').with(query: body_params)).to have_been_made
         expect(result.class).to eq(Array)
         expect(result.length).to eq(1)
         result.each_with_index do |r, i|
@@ -176,11 +176,11 @@ describe ZohoInvoice::Base do
 
       it "returns an array if it finds multiple records" do
         body_params = default_credentials.merge(:searchtext => '1234')
-        stub_get('/api/view/search/somethings').
+        stub_get('/api/v3/view/search/somethings').
           with(:query => body_params).
           to_return(:status => 200, :body => fixture('successful_multiple_record_response'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
-        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(a_get('/api/v3/view/search/somethings').with(query: body_params)).to have_been_made
         expect(result.class).to eq(Array)
         expect(result.length).to eq(2)
         result.each_with_index do |r, i|
@@ -192,24 +192,24 @@ describe ZohoInvoice::Base do
 
       it "returns an empty array if it cant find anything" do
         body_params = default_credentials.merge(:searchtext => '1234')
-        stub_get('/api/view/search/somethings').
+        stub_get('/api/v3/view/search/somethings').
           with(:query => body_params).
           to_return(:status => 200, :body => fixture('successful_empty_response'), :headers => {:content_type => 'application/xml'})
         result = Something.search(@client, '1234')
-        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(a_get('/api/v3/view/search/somethings').with(query: body_params)).to have_been_made
         expect(result.class).to eq(Array)
         expect(result.length).to eq(0)
       end
 
       it "should return an error if theres an error" do
         body_params = default_credentials.merge(:searchtext => '1234')
-        stub_get('/api/view/search/somethings').
+        stub_get('/api/v3/view/search/somethings').
           with(:query => body_params).
           to_return(:status => 500, :body => fixture('500_internal_server_error'), :headers => {:content_type => 'application/xml'})
         expect { Something.search(@client, '1234') }.to raise_error { |e|
           error_expectations(e, 'Invalid value passed for XMLString', '2', '0', 500)
         }
-        expect(a_get('/api/view/search/somethings').with(query: body_params)).to have_been_made
+        expect(a_get('/api/v3/view/search/somethings').with(query: body_params)).to have_been_made
       end
     end
   end

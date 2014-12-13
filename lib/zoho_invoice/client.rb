@@ -28,6 +28,10 @@ module ZohoInvoice
       request(:post, path, credentials.merge(params))
     end
 
+    def put(path, params={})
+      request(:put, path, credentials.merge(params))
+    end
+
     def request(verb, path, params={})
       connection.send(verb, path, params)
     end
@@ -37,15 +41,13 @@ module ZohoInvoice
     def connection
       @connection ||= Faraday.new(@client_options) do |c|
         c.use       Faraday::Response::RaiseError
-
         c.request :multipart
         c.request :url_encoded
-
-        c.response  :xml, :content_type => /\bxml$/
-
+        c.response  :json, :content_type => /\bjson$/
         c.adapter Faraday.default_adapter
       end
     end
 
   end
+
 end

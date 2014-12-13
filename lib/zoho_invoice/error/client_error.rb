@@ -14,9 +14,9 @@ module ZohoInvoice
         error = self.new
         if !response[:body].nil?
           response_body = response[:body]
-          error.response_status  = response_body['Response']['status']
-          error.code    = response_body['Response']['Code']
-          error.message = response_body['Response']['Message']
+          error.response_status  = response_body['status']
+          error.code    = response_body['code']
+          error.message = response_body['message']
         end
         error.http_status = response[:status]
         error

@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'bundler', '~> 1.0'
 
   gem.add_runtime_dependency "faraday", ">= 0.8.0"
-  gem.add_runtime_dependency "faraday_middleware", ">= 0.8.7"
+  gem.add_runtime_dependency "faraday_middleware"
   gem.add_runtime_dependency "nokogiri"
   gem.add_runtime_dependency "multi_xml"
 

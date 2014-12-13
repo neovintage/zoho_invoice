@@ -1,5 +1,5 @@
 <Response>
-  <Customers uri='/api/customers'>
+  <Customers uri='/api/v3/customers'>
     <Customer>
       <CustomerID>1</CustomerID>
     </Customer>
