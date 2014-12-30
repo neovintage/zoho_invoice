@@ -9,11 +9,12 @@ module ZohoInvoice
 
     def self.generate_authtoken(email_id, password)
       response = Excon.post('https://accounts.zoho.com/apiauthtoken/nb/create',
-                   :query => {
+                   :body => URI.encode_www_form({
                      :SCOPE => 'invoiceapi',
                      :EMAIL_ID => email_id,
                      :PASSWORD => password
-                   }
+                   }),
+                   :headers => { "Content-Type" => "application/x-www-form-urlencoded" }
                  )
 
       result = ZohoInvoice::AuthToken::AuthTokenResult.new(nil, nil)
