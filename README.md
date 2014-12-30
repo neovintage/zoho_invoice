@@ -63,17 +63,18 @@ require 'zoho_invoice'
 
 client = ZohoInvoice::Client.new(:authtoken => 'my authtoken', :apikey => 'my apikey')
 
-invoice = ZohoInvoice::Invoice.new(client, :customer_id => 'asdf')
+invoice = ZohoInvoice::Invoice.new(client, :customer_id => 'asdf', :organization_id => 123)
 invoice.save
 ```
 
-If you're so inclined, you can scope the resources through the client.
+If you're so inclined, you can scope the resources through the client and your organization.
 
 ```ruby
 require 'zoho_invoice'
 
 client = ZohoInvoice::Client.new(:authtoken => 'my authtoken', :apikey => 'my apikey')
-invoice = client.invoices.new(:customer_id => 'asdf')
+organization = client.organization.find(123)
+invoice = organization.invoices.new(:customer_id => 'asdf')
 invoice.save
 ```
 

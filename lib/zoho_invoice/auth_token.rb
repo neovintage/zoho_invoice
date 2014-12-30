@@ -8,16 +8,13 @@ module ZohoInvoice
     end
 
     def self.generate_authtoken(email_id, password)
-      client = ZohoInvoice::Client.new(:client_options => {:url => 'https://accounts.zoho.com'})
-      response = client.request(
-        :get,
-        '/apiauthtoken/nb/create',
-        {
-          :SCOPE => 'invoiceapi',
-          :EMAIL_ID => email_id,
-          :PASSWORD => password
-        }
-      )
+      response = Excon.post('https://accounts.zoho.com/apiauthtoken/nb/create',
+                   :query => {
+                     :SCOPE => 'invoiceapi',
+                     :EMAIL_ID => email_id,
+                     :PASSWORD => password
+                   }
+                 )
 
       result = ZohoInvoice::AuthToken::AuthTokenResult.new(nil, nil)
       result.cause = response.body.match(/\nCAUSE=(.+)\n/)[1] if response.body =~ /RESULT=FALSE/

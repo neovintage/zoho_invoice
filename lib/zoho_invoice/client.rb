@@ -35,16 +35,7 @@ module ZohoInvoice
     private
 
     def connection
-      @connection ||= Faraday.new(@client_options) do |c|
-        c.use       Faraday::Response::RaiseError
-
-        c.request :multipart
-        c.request :url_encoded
-
-        c.response  :xml, :content_type => /\bxml$/
-
-        c.adapter Faraday.default_adapter
-      end
+      @connection ||= Excon.new('https://invoice.zoho.com/api/v3')
     end
 
   end

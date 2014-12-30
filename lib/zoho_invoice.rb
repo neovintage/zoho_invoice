@@ -1,7 +1,5 @@
-require 'faraday'
-require 'faraday_middleware'
-require 'nokogiri'
-require 'multi_xml'
+require 'excon'
+require 'json'
 
 require 'zoho_invoice/core_ext/string'
 require 'zoho_invoice/error'
