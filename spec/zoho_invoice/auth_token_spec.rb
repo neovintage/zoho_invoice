@@ -6,15 +6,15 @@ describe ZohoInvoice::AuthToken do
     email_id = 'big_tuna@example.com'
     password = 'tuna'
 
-    stub_request(:get, 'https://accounts.zoho.com/apiauthtoken/nb/create').
-      with(:query => default_auth_options(email_id, password)).
+    stub_request(:post, 'https://accounts.zoho.com/apiauthtoken/nb/create').
+      with(:body => default_auth_options(email_id, password)).
       to_return(:body => fixture('successful_authtoken'))
 
     result = ZohoInvoice::AuthToken.generate_authtoken(email_id, password)
     expect(result.success?).to be_true
     expect(result).to be_a ZohoInvoice::AuthToken::AuthTokenResult
-    expect(a_request(:get, 'https://accounts.zoho.com/apiauthtoken/nb/create')
-      .with(:query => default_auth_options(email_id, password)))
+    expect(a_request(:post, 'https://accounts.zoho.com/apiauthtoken/nb/create')
+      .with(:body => default_auth_options(email_id, password)))
       .to have_been_made
   end
 
@@ -33,15 +33,15 @@ describe ZohoInvoice::AuthToken do
     end
 
     def bad_request(fixture_to_use, email_id, password)
-      stub_request(:get, 'https://accounts.zoho.com/apiauthtoken/nb/create').
-        with(:query => default_auth_options(email_id, password)).
+      stub_request(:post, 'https://accounts.zoho.com/apiauthtoken/nb/create').
+        with(:body => default_auth_options(email_id, password)).
         to_return(:body => fixture(fixture_to_use))
 
       result = ZohoInvoice::AuthToken.generate_authtoken(email_id, password)
       expect(result.success?).to be_false
       expect(result).to be_a ZohoInvoice::AuthToken::AuthTokenResult
-      expect(a_request(:get, 'https://accounts.zoho.com/apiauthtoken/nb/create')
-        .with(:query => default_auth_options(email_id, password)))
+      expect(a_request(:post, 'https://accounts.zoho.com/apiauthtoken/nb/create')
+        .with(:body => default_auth_options(email_id, password)))
         .to have_been_made
 
       yield result
@@ -63,11 +63,11 @@ describe ZohoInvoice::AuthToken do
   private
 
   def default_auth_options(email, password)
-    {
+    URI.encode_www_form({
       :SCOPE => 'invoiceapi',
       :EMAIL_ID => email,
       :PASSWORD => password
-    }
+    })
   end
 
 end
