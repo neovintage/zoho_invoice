@@ -35,7 +35,7 @@ module ZohoInvoice
     private
 
     def connection
-      @connection ||= Excon.new('https://invoice.zoho.com/api/v3')
+      @connection ||= Excon.new(@client_options[:url] || ZohoInvoice::Defaults::URL)
     end
 
   end
