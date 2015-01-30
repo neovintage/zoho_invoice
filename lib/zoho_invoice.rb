@@ -15,6 +15,7 @@ require 'zoho_invoice/defaults'
 require 'zoho_invoice/client'
 require 'zoho_invoice/version'
 require 'zoho_invoice/base'
+require 'zoho_invoice/currency'
 # Load embeds
 require 'zoho_invoice/line_item'
 require 'zoho_invoice/custom_field'
