@@ -7,6 +7,8 @@ module ZohoInvoice
         :contact_id,
         :contact_name,
         :company_name,
+        :website,
+        :currency_id,        
         :first_name,
         :last_name,
         :address,
