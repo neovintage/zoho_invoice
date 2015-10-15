@@ -26,6 +26,7 @@ require 'zoho_invoice/estimate'
 require 'zoho_invoice/organization'
 require 'zoho_invoice/item'
 require 'zoho_invoice/invoice'
+require 'zoho_invoice/tax'
 
 module ZohoInvoice
   class << self
