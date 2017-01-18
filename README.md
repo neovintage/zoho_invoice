@@ -1,17 +1,18 @@
 # Zoho Invoice
 
-[![Build Status](https://travis-ci.org/neovintage/zoho_invoice.png?branch=master)](https://travis-ci.org/neovintage/zoho_invoice)
-[![Coverage Status](https://coveralls.io/repos/neovintage/zoho_invoice/badge.png?branch=master)](https://coveralls.io/r/neovintage/zoho_invoice)
+[![Build Status](https://travis-ci.org/rept/zoho_invoice.png?branch=master)](https://travis-ci.org/rept/zoho_invoice)
+[![Coverage Status](https://coveralls.io/repos/rept/zoho_invoice/badge.png?branch=master)](https://coveralls.io/r/rept/zoho_invoice)
 
 Need to interact with the Zoho Invoice API?  The zoho_invoice gem has your back.
 
-Until the gem reaches 1.0, the interface for interacting with the gem could change.  On top of that the gem does not support the entire API just yet.  Just the minimum number of domain objects to actually create customers and invoices.  This will change over time.
+##### Attention: this Gem is fork of the neovintage gem which didn't seem to get any updates anymore.
+I have merged Alex Sherstinsky pull request and committed some fixes.  Units will be added when needed.  If you want to do commit I'll do my best to merge them!  I use the gem myself in a production environment.   
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'zoho_invoice'
+    gem 'zoho_invoice', :git => 'https://github.com/rept/zoho_invoice.git'
 
 And then execute:
 
@@ -19,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install zoho_invoice
+    $ gem install zoho_invoice, :git => 'https://github.com/rept/zoho_invoice.git'
 
 ## Configuration
 
