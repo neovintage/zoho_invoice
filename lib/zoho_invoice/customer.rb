@@ -27,11 +27,11 @@ module ZohoInvoice
     end
 
     def self.all_active(client, options = {})
-      retrieve(client, '/api/customers').each { |c| c.active = true }
+      retrieve(client, '/api/v3/customers').each { |c| c.active = true }
     end
 
     def self.all_inactive(client, options = {})
-      retrieve(client, '/api/customers/inactive').each { |c| c.active = false }
+      retrieve(client, '/api/v3/customers/inactive').each { |c| c.active = false }
     end
 
   end

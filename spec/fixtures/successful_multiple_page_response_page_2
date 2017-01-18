@@ -1,5 +1,5 @@
 <Response>
-  <Invoices uri='/api/invoices/customer/1234'>
+  <Invoices uri='/api/v3/invoices/customer/1234'>
     <Invoice>
       <InvoiceID>3</InvoiceID>
       <Status>Open</Status>

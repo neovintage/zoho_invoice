@@ -1,3 +1,3 @@
 <Response>
-  <Somethings uri='/api/views/search/somethings'></Somethings>
+  <Somethings uri='/api/v3/views/search/somethings'></Somethings>
 </Response>

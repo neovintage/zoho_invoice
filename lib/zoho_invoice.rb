@@ -1,3 +1,4 @@
+require 'active_support/core_ext/object'
 require 'faraday'
 require 'faraday_middleware'
 require 'nokogiri'
@@ -14,10 +15,19 @@ require 'zoho_invoice/defaults'
 require 'zoho_invoice/client'
 require 'zoho_invoice/version'
 require 'zoho_invoice/base'
+require 'zoho_invoice/currency'
+# Load embeds
+require 'zoho_invoice/line_item'
+require 'zoho_invoice/custom_field'
+require 'zoho_invoice/address'
+# Load standalone
 require 'zoho_invoice/customer'
+require 'zoho_invoice/estimate'
+require 'zoho_invoice/organization'
 require 'zoho_invoice/item'
-require 'zoho_invoice/invoice_item'
 require 'zoho_invoice/invoice'
+require 'zoho_invoice/tax'
+require 'zoho_invoice/user'
 
 module ZohoInvoice
   class << self

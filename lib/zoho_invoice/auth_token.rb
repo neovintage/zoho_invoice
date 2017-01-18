@@ -13,7 +13,7 @@ module ZohoInvoice
         :get,
         '/apiauthtoken/nb/create',
         {
-          :SCOPE => 'invoiceapi',
+          :SCOPE => ZohoInvoice.scope,
           :EMAIL_ID => email_id,
           :PASSWORD => password
         }
